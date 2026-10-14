@@ -1,0 +1,67 @@
+/* Preserve the original diagram geometry; responsive layout only rearranges whole parts. */
+.method-explorer { width: 100%; max-width: 1600px; font-family: "Crimson Text", Georgia, serif; color: #e9e6e3; }
+.method-explorer * { box-sizing: border-box; }
+.method-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 24px; font-size: 16px; color: #bfb7b7; }
+.method-toolbar a, .method-page-heading a { color: #c6c3c0; text-decoration: none; }
+.method-toolbar a:hover, .method-page-heading a:hover { color: #fff; }
+.method-board { display: grid; grid-template-columns: 559.748fr 907.087fr 687.827fr; align-items: start; background: transparent; }
+.method-part { min-width: 0; width: 100%; background: transparent; }
+.method-controls-line { display: flex; justify-content: space-between; align-items: center; min-height: 38px; margin: 0 20px 12px; gap: 12px; }
+.method-controls-line > span { color: #b8b5b2; font-size: 15px; letter-spacing: .06em; }
+.method-replay { color: #c8c3c0; font: inherit; font-size: 14px; background: transparent; border: 1px solid #454342; border-radius: 999px; padding: 4px 11px; cursor: pointer; white-space: nowrap; }
+.method-replay[hidden] { display: none; }
+.method-replay:hover { color: #fff; border-color: #a6babf; }
+.method-replay:focus-visible, .method-toolbar a:focus-visible { outline: 2px solid #8ac3e1; outline-offset: 4px; }
+.method-global-controls { margin-bottom: 22px; }
+.method-global-controls .method-controls-line, .method-global-controls .method-progress { margin-inline: 0; }
+.method-progress { display: flex; gap: 5px; margin: 0 20px 14px; }
+.method-progress-stop { flex: 1; min-width: 0; height: 26px; padding: 10px 0; background: transparent; border: 0; cursor: pointer; }
+.method-progress-stop > span { display: block; height: 3px; background: #494646; border-radius: 2px; transition: background .2s; }
+.method-progress-stop.is-done > span { background: #dbd9d5; }
+.method-progress-stop[aria-current="step"] > span { background: #fff; box-shadow: 0 0 7px #b6c9d16b; }
+.method-progress-stop:hover > span { background: #adc7d3; }
+.method-progress-stop:focus-visible { outline: 2px solid #8ac3e1; outline-offset: 1px; border-radius: 3px; }
+.method-control-caption { line-height: 1.35; }
+.method-local-controls { margin-bottom: 12px; }
+.method-global-controls[hidden], .method-local-controls[hidden] { display: none !important; }
+.method-stage { position: relative; width: 100%; min-width: 0; container-type: inline-size; --font-reference: var(--stage-width); aspect-ratio: var(--stage-width) / var(--stage-height); isolation: isolate; background: transparent; }
+.method-shape, .method-text, .method-picture, .method-connector { position: absolute; box-sizing: border-box; }
+.method-shape { pointer-events: none; }
+.method-text { display: flex; flex-direction: column; justify-content: center; padding: 0; margin: 0 !important; font-family: inherit; font-size: inherit !important; font-weight: 400; line-height: 1.1; letter-spacing: normal; }
+.method-paragraph { padding: 0; margin: 0; white-space: nowrap; }
+.method-paragraph span { font-family: inherit; }
+.method-text[data-shape="POST / privileged tracker label"] span { --native-font: 29.9349; font-size: calc(var(--native-font) * 100cqw / var(--font-reference)) !important; }
+.method-picture { overflow: hidden; }
+.method-picture img { display: block; position: absolute; max-width: none; object-fit: fill; }
+.method-motion-strip { position: absolute; display: flex; gap: 0; overflow: hidden; background: #fff; }
+.method-motion-strip img { display: block; width: 33.333333%; height: 100%; min-width: 0; object-fit: fill; }
+.method-connector { top: 0; left: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+[data-step="posttrain-intro"] .method-transition-right { left: -1.6%; }
+[data-step="deploy-intro"] .method-transition-right { left: 2.2%; }
+.method-step { position: absolute; inset: 0; pointer-events: none; }
+.method-explorer.is-enhanced .method-step:not(.is-revealed) { visibility: hidden; }
+.method-step [data-reveal] { will-change: auto; }
+.method-stage-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.method-standalone { margin: 0; padding: 36px; background: #0b0909; color: #eee7e7; }
+.method-standalone .method-explorer { max-width: 2000px; margin: 0 auto; }
+.method-page-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 28px; }
+.method-page-heading h1 { font-size: 30px; font-weight: 600; margin: 0; }
+.method-page-heading a { font-size: 17px; }
+@media (max-width: 1100px) and (orientation: portrait) {
+    .method-board { grid-template-columns: minmax(0, 1fr); width: 100%; max-width: 780px; margin-inline: auto; gap: 40px; }
+    /* Expand each canvas independently while all text keeps the Post-train font reference. */
+    .method-part, .method-stage { width: 100%; min-width: 0; max-width: none; }
+    .method-controls-line, .method-progress { margin-inline: 0; }
+    .method-stage { --font-reference: 907.087; }
+    .method-shape { border-width: 1px !important; }
+    .method-transition-right { display: none; }
+}
+@media (max-width: 600px) {
+    .method-toolbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .method-standalone { padding: 24px 12px; }
+    .method-page-heading { align-items: flex-start; flex-direction: column; gap: 10px; }
+    .method-page-heading h1 { font-size: 26px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .method-progress-stop > span { transition: none; }
+}

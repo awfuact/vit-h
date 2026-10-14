@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+    <!-- Replace the content tag with appropriate information -->
+    <meta name="description" content="Project page for 'ViT-H: Generative Video-To-Humanoid Control with Motion Tracking Feedback'.">
+    <meta property="og:title" content="ViT-H: Generative Video-To-Humanoid Control with Motion Tracking Feedback"/>
+    <meta property="og:description" content="Project page for 'ViT-H: Generative Video-To-Humanoid Control with Motion Tracking Feedback'."/>
+    <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
+    <meta property="og:image" content="static/images/teaser.png" />
+    <meta property="og:image:width" content="1200"/>
+    <meta property="og:image:height" content="630"/>
+
+
+    <meta name="twitter:title" content="ViT-H: Generative Video-To-Humanoid Control with Motion Tracking Feedback">
+    <meta name="twitter:description" content="Project page for 'ViT-H: Generative Video-To-Humanoid Control with Motion Tracking Feedback'.">
+    <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+    <meta name="twitter:image" content="static/images/teaser.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Keywords for your paper to be indexed by-->
+    <meta name="keywords" content="humanoid robotics, humanoid control, motion generation, motion tracking, post-training">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>ViT-H: Generative Video-To-Humanoid Control with Motion Tracking Feedback</title>
+    <!-- <link rel="icon" type="image/x-icon" href="static/images/favicon.ico"> -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&amp;display=swap">
+    <link rel="stylesheet" href="static/css/bulma.min.css">
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="stylesheet" href="static/css/video-gallery.css">
+    <link rel="stylesheet" href="static/css/grid.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.5/css/academicons.min.css">
+    <link rel="stylesheet" href="static/css/theme.css?v=20261013-baseline-radius">
+    <link rel="stylesheet" href="static/css/method.css">
+    <link rel="stylesheet" href="static/css/results.css?v=20261013-split-trackers">
+
+    <script src="static/js/bulma-carousel.min.js"></script>
+    <script src="static/js/bulma-slider.min.js"></script>
+    <script src="static/js/index.js?v=20261013-results"></script>
+    <script src="static/js/method.js" defer></script>
+    <script src="static/js/results.js?v=20261013-full-labels" defer></script>
+    <script src="static/js/video-gallery.js?v=20261013-black-loading"></script>
+    <script src="static/js/grid.js"></script>
+
+    <script src="https://kit.fontawesome.com/d383128d10.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#abstract">Skip to content</a>
+<nav class="project-nav" aria-label="Main navigation">
+    <a class="nav-brand" href="#top">ViT-H</a>
+    <div class="nav-links">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#real-world">Deployment</a>
+        <a href="#comparisons">Experiments</a>
+    </div>
+</nav>
+
+
+<section class="hero publication-hero" id="top" aria-labelledby="publication-title">
+    <video class="hero-background" autoplay muted loop playsinline preload="metadata" poster="static/images/title-background-poster.jpg" aria-hidden="true" tabindex="-1">
+        <source src="static/videos/teaser.mp4" type="video/mp4">
+    </video>
+    <div class="hero-body">
+        <div class="container is-max-desktop">
+            <div class="columns is-centered">
+                <div class="column has-text-centered">
+                    <h1 class="title is-1 publication-title" id="publication-title">
+                        <span class="publication-mark"><span class="title-accent">ViT-H</span>:</span>
+                        <span class="publication-subtitle">Generative <span class="title-accent">Vi</span>deo-<span class="title-accent">T</span>o<span class="title-accent">-H</span>umanoid Control<br> with Motion Tracking Feedback</span>
+                    </h1>
+                    <div class="is-size-5 publication-authors">
+                        <!-- Author order and affiliation numbers follow the paper. -->
+                        <div class="author-row">
+                            <span class="author-block"><a href="https://mileret.github.io/" class="author" target="_blank" rel="noopener">Zimo He</a><sup>1, 2, *</sup></span>
+                            <span class="author-block"><a href="https://pku.ai/author/tianyi-bian/" class="author" target="_blank" rel="noopener">Tianyi Bian</a><sup>1, *</sup></span>
+                            <span class="author-block"><a href="https://pku.ai/author/zizhong-yang/" class="author" target="_blank" rel="noopener">Zizhong Yang</a><sup>1, *</sup></span>
+                            <span class="author-block"><a href="https://awfuact.github.io/" class="author" target="_blank" rel="noopener">Hongjie Li</a><sup>1, *, †</sup></span>
+                        </div>
+                        <div class="author-row">
+                            <span class="author-block"><a href="https://jnnan.github.io/" class="author" target="_blank" rel="noopener">Nan Jiang</a><sup>1</sup></span>
+                            <span class="author-block"><a href="https://jiemingcui.github.io/" class="author" target="_blank" rel="noopener">Jieming Cui</a><sup>1, 2</sup></span>
+                            <span class="author-block"><a href="https://buzz-beater.github.io/" class="author" target="_blank" rel="noopener">Baoxiong Jia</a><sup>2</sup></span>
+                        </div>
+                        <div class="author-row">
+                            <span class="author-block"><a href="https://cfcs.pku.edu.cn/people/faculty/yizhouwang/index.htm" class="author" target="_blank" rel="noopener">Yizhou Wang</a><sup>1, ✉</sup></span>
+                            <span class="author-block"><a href="https://siyuanhuang.com/" class="author" target="_blank" rel="noopener">Siyuan Huang</a><sup>2, ✉</sup></span>
+                            <span class="author-block"><a href="https://yzhu.io/" class="author" target="_blank" rel="noopener">Yixin Zhu</a><sup>1, ✉</sup></span>
+                        </div>
+                        <div class="author-row affiliations">
+                            <span class="author-block"><sup>1</sup>Peking University</span>
+                            <span class="author-block"><sup>2</sup>State Key Laboratory of General Artificial Intelligence, BIGAI</span>
+                        </div>
+                        <div class="author-row contribution-notes">
+                            <span class="author-block"><sup>*</sup>Equal Contributions</span>
+                            <span class="author-block"><sup>†</sup> Project Lead</span>
+                            <span class="author-block"><sup>✉</sup> Corresponding Authors</span>
+                        </div>
+                    </div>
+                    <div class="publication-links">
+                        <!-- Arxiv PDF link -->
+                        <span class="link-block">
+                            <a href="" class="external-link button is-normal is-rounded is-dark">
+                                <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                                <span>Paper</span>
+                            </a>
+                        </span>
+        
+                        <!-- ArXiv Abstract Link -->
+                        <span class="link-block">
+                            <a href="" class="external-link button is-normal is-rounded is-dark">
+                                <span class="icon"><i class="ai ai-arxiv" aria-hidden="true"></i></span>
+                                <span>arXiv</span>
+                            </a>
+                        </span>
+        
+                        <!-- Code link -->
+                        <span class="link-block">
+                            <a href="" class="external-link button is-normal is-rounded is-dark">
+                                <span class="icon"><i class="fab fa-github"></i></span>
+                                <span>Code</span>
+                            </a>
+                        </span>
+
+                        <!-- Video link -->
+                        <span class="link-block">
+                            <a href="" class="external-link button is-normal is-rounded is-dark">
+                                <span class="icon"><i class="fab fa-youtube"></i></span>
+                                <span>Video</span>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="hero-scroll" href="#abstract">Explore ViT-H <span aria-hidden="true">↓</span></a>
+</section>
+
+
+<!-- Abstract -->
+<section class="hero is-small abstract-section" id="abstract" aria-labelledby="abstract-title">
+    <div class="hero-body">
+        <div class="container abstract-layout">
+            <div class="abstract-text">
+                <h2 class="section-eyebrow" id="abstract-title">Abstract</h2>
+                <div class="abstract-body">
+                    <p>Learning humanoid control from monocular human videos offers a scalable way to acquire diverse whole-body behaviors. Yet, existing reconstruction-retargeting-tracking pipelines are limited in system-level scalability by separately optimized intermediate stages and cannot directly optimize reference motion executability using downstream tracking feedback.</p>
+                    <p>We present ViT-H, a video-to-humanoid control framework following a generation-and-tracking paradigm. ViT-H directly generates humanoid reference motions from videos with a diffusion model, bypassing human motion reconstruction and retargeting, and uses motion-tracking outcomes to post-train the generator with direct preference optimization. We further introduce an autoregressive variant that enables real-time humanoid video teleoperation with sub-500 ms latency.</p>
+                    <p>Extensive experiments on the Unitree G1 demonstrate that ViT-H outperforms state-of-the-art reconstruction-retargeting-tracking pipelines in both motion quality and executability. We further show that ViT-H scales favorably with model size and with both pre-training and post-training data scale, while motion-tracking feedback consistently improves executability across different motion trackers.</p>
+                </div>
+            </div>
+            <div class="abstract-highlights">
+                <p class="section-eyebrow">Real-world highlights</p>
+                <figure class="highlight-frame">
+                    <video class="highlight-video" controls muted loop playsinline preload="metadata" poster="static/images/real-world-highlights-poster.jpg" aria-label="ViT-H real-time humanoid video teleoperation highlights">
+                        <source src="static/videos/real_world.mp4" type="video/mp4">
+                    </video>
+                    <figcaption>Real-time video teleoperation on the Unitree G1, driven by monocular human video.</figcaption>
+                </figure>
+                <div class="research-facts">
+                    <div><strong>Single camera</strong><p>RealSense D455 · RGB only</p></div>
+                    <div><strong>&lt;400ms latency</strong><p>250ms on average</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--End abstract -->
+
+
+<!-- Method -->
+<section class="hero is-small" id="method" aria-labelledby="method-title">
+    <div class="hero-body">
+        <div class="container">
+            <p class="section-eyebrow">Generation and tracking</p>
+            <h2 id="method-title" class="title is-2">Method Overview</h2>
+            <div class="method-explorer">
+<div class="method-toolbar"><span>Explore the generation-and-tracking process.</span><a href="method.html" target="_blank" rel="noopener">Open full-size ↗</a></div>
+<div class="method-global-controls" hidden=""><div class="method-controls-line"><span class="method-control-caption" aria-live="polite">Follow the video-to-humanoid pipeline</span><button class="method-replay" type="button" aria-label="Replay the complete method animation">↻ Replay</button></div><div class="method-progress" role="group" aria-label="Complete method animation states"><button type="button" class="method-progress-stop" data-seek="0" aria-label="1. Input video" title="1. Input video"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="1" aria-label="2. Video condition set" title="2. Video condition set"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="2" aria-label="3. Diffusion-based motion generation" title="3. Diffusion-based motion generation"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="3" aria-label="4. Direct G1 motion prediction" title="4. Direct G1 motion prediction"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="4" aria-label="5. Preceding segment for the AR variant" title="5. Preceding segment for the AR variant"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="5" aria-label="6. Continue to post-training" title="6. Continue to post-training"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="6" aria-label="7. Input video → motion generator" title="7. Input video → motion generator"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="7" aria-label="8. Generate motion candidates" title="8. Generate motion candidates"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="8" aria-label="9. Track candidates and compare tracking results" title="9. Track candidates and compare tracking results"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="9" aria-label="10. Read the four tracking rewards" title="10. Read the four tracking rewards"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="10" aria-label="11. Construct motion preferences" title="11. Construct motion preferences"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="11" aria-label="12. DPO update" title="12. DPO update"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="12" aria-label="13. Continue to deployment" title="13. Continue to deployment"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="13" aria-label="14. Offline: input video" title="14. Offline: input video"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="14" aria-label="15. Offline: generate and track" title="15. Offline: generate and track"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="15" aria-label="16. Offline: real-world execution" title="16. Offline: real-world execution"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="16" aria-label="17. Online: live video inputs" title="17. Online: live video inputs"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="17" aria-label="18. Online: generate and track" title="18. Online: generate and track"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="18" aria-label="19. Online: real-world execution" title="19. Online: real-world execution"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="19" aria-label="20. Online: preceding-segment feedback" title="20. Online: preceding-segment feedback"><span aria-hidden="true"></span></button></div></div>
+
+<div class="method-board">
+<div class="method-part" data-stage="pretrain">
+    <div class="method-local-controls" hidden=""><div class="method-controls-line"><span class="method-control-caption">Pre-train</span><button class="method-replay" type="button" aria-label="Replay Pre-train">↻ Replay</button></div><div class="method-progress" role="group" aria-label="pretrain animation states"><button type="button" class="method-progress-stop" data-seek="0" aria-label="1. Input video" title="1. Input video"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="1" aria-label="2. Video condition set" title="2. Video condition set"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="2" aria-label="3. Diffusion-based motion generation" title="3. Diffusion-based motion generation"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="3" aria-label="4. Direct G1 motion prediction" title="4. Direct G1 motion prediction"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="4" aria-label="5. Preceding segment for the AR variant" title="5. Preceding segment for the AR variant"><span aria-hidden="true"></span></button></div></div><section class="method-stage method-stage-pretrain method-canvas" aria-label="Humanoid motion generation from videos" style="--stage-width:559.748;--stage-height:802.3333333333334;">
+    <h3 class="method-text" data-shape="PRE / heading" style="left:0.00000%;top:0.21859%;width:100.00001%;height:12.99061%;"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:40.0;">Humanoid Motion </span></div><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:40.0;">Generation from Videos</span></div></h3>
+    <div class="method-step" data-step="pretrain-0" data-narration="Input video"><div class="method-shape" data-shape="PRE / input card" aria-hidden="true" style="left:4.32791%;top:14.61798%;width:91.28967%;height:16.11049%;background:#171515;border:0.59551cqw solid #D0DEE8;border-radius:2.43072cqw;" data-reveal="" data-delay="0" data-direction="down"></div>
+    <div class="method-text" data-shape="PRE / input label" style="left:12.70063%;top:18.29230%;width:13.80034%;height:8.72404%;" data-reveal="" data-delay="0" data-direction="down"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:34.6666;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Input</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:34.6666;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">video</span></div></div>
+    <div class="method-picture" data-shape="PRE / video / REAL SOURCE / v15" style="left:33.08575%;top:15.54521%;width:60.88454%;height:14.11589%;" data-reveal="" data-delay="160" data-direction="down"><img src="static/images/method-116-pre-video.png" alt="PRE: video" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    </div><div class="method-step" data-step="pretrain-1" data-narration="Video condition set"><svg class="method-connector" data-shape="PRE / video to conditions / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="down"><defs><marker id="arrow-13" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#49A4D2"/></marker></defs><path d="M 287.520 248.057 L 287.520 263.257" fill="none" stroke="#49A4D2" stroke-width="4.000" marker-end="url(#arrow-13)" stroke-linejoin="round"/></svg>
+    <div class="method-shape" data-shape="PRE / condition card" aria-hidden="true" style="left:4.32791%;top:34.40277%;width:91.28967%;height:27.60258%;background:#171515;border:0.59551cqw solid #49A4D2;border-radius:2.56421cqw;" data-reveal="" data-delay="350" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / camera / shared origin" aria-hidden="true" style="left:15.08996%;top:46.97989%;width:1.06332%;height:0.74183%;background:#202B36;border-radius:50%;" data-reveal="" data-delay="600" data-direction="down"></div>
+    <svg class="method-connector" data-shape="PRE / camera / x axis / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-319" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#C75B60"/></marker></defs><path d="M 87.442 379.911 L 66.003 379.911" fill="none" stroke="#C75B60" stroke-width="1.867" marker-end="url(#arrow-319)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="PRE / camera / y axis / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-320" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#389C7C"/></marker></defs><path d="M 87.442 379.911 L 87.442 353.672" fill="none" stroke="#389C7C" stroke-width="1.867" marker-end="url(#arrow-320)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="PRE / camera / z axis / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-321" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#49A4D2"/></marker></defs><path d="M 87.442 379.911 L 72.288 395.862" fill="none" stroke="#49A4D2" stroke-width="1.867" marker-end="url(#arrow-321)" stroke-linejoin="round"/></svg>
+    <div class="method-text" data-shape="PRE / condition label" style="left:4.31762%;top:34.40279%;width:91.28962%;height:5.07610%;" data-reveal="" data-delay="350" data-direction="down"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Video c</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">ondition set</span></div></div>
+    <div class="method-text" data-shape="PRE / camera label" style="left:7.60925%;top:54.16436%;width:26.93921%;height:7.55122%;" data-reveal="" data-delay="600" data-direction="down"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">Camera</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">orientation</span></div></div>
+    <div class="method-text" data-shape="PRE / annotation label" style="left:37.44615%;top:54.16436%;width:34.52016%;height:7.55122%;" data-reveal="" data-delay="800" data-direction="down"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">B</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">B</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">ox</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;"> </span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">&amp;</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">keypoint</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">s</span></div></div>
+    <div class="method-text" data-shape="PRE / feature label" style="left:76.02930%;top:54.16436%;width:16.98734%;height:7.55122%;" data-reveal="" data-delay="1000" data-direction="down"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">Image</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">feature</span></div></div>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 0 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-290" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#B5D7ED"></path></marker></defs><path d="M 50.479 394.954 L 102.053 400.972" fill="none" stroke="#B5D7ED" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 0 / 2" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-291" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#B5D7ED"></path></marker></defs><path d="M 102.053 400.972 L 102.053 367.794" fill="none" stroke="#B5D7ED" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 0 / 3" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-292" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#B5D7ED"></path></marker></defs><path d="M 102.053 367.794 L 50.479 361.776" fill="none" stroke="#B5D7ED" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 0 / 4" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-293" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#B5D7ED"></path></marker></defs><path d="M 50.479 361.776 L 50.479 394.954" fill="none" stroke="#B5D7ED" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 0-0 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-294" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#B5D7ED"></path></marker></defs><path d="M 85.646 365.899 L 50.479 394.954" fill="none" stroke="#B5D7ED" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 0-1 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-295" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#B5D7ED"></path></marker></defs><path d="M 85.646 365.899 L 102.053 400.972" fill="none" stroke="#B5D7ED" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 0-2 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-296" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#B5D7ED"></path></marker></defs><path d="M 85.646 365.899 L 102.053 367.794" fill="none" stroke="#B5D7ED" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 0-3 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-297" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#B5D7ED"></path></marker></defs><path d="M 85.646 365.899 L 50.479 361.776" fill="none" stroke="#B5D7ED" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 1 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-298" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7DBAE0"></path></marker></defs><path d="M 112.728 401.639 L 157.349 401.639" fill="none" stroke="#7DBAE0" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 1 / 2" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-299" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7DBAE0"></path></marker></defs><path d="M 157.349 401.639 L 157.349 368.462" fill="none" stroke="#7DBAE0" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 1 / 3" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-300" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7DBAE0"></path></marker></defs><path d="M 157.349 368.462 L 112.728 368.462" fill="none" stroke="#7DBAE0" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 1 / 4" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-301" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7DBAE0"></path></marker></defs><path d="M 112.728 368.462 L 112.728 401.639" fill="none" stroke="#7DBAE0" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 1-0 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-302" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7DBAE0"></path></marker></defs><path d="M 85.646 365.899 L 112.728 401.639" fill="none" stroke="#7DBAE0" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 1-1 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-303" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7DBAE0"></path></marker></defs><path d="M 85.646 365.899 L 157.349 401.639" fill="none" stroke="#7DBAE0" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 1-2 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-304" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7DBAE0"></path></marker></defs><path d="M 85.646 365.899 L 157.349 368.462" fill="none" stroke="#7DBAE0" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 1-3 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-305" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#7DBAE0"></path></marker></defs><path d="M 85.646 365.899 L 112.728 368.462" fill="none" stroke="#7DBAE0" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 2 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-306" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#388DBC"></path></marker></defs><path d="M 164.579 400.972 L 185.114 394.954" fill="none" stroke="#388DBC" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 2 / 2" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-307" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#388DBC"></path></marker></defs><path d="M 185.114 394.954 L 185.114 361.776" fill="none" stroke="#388DBC" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 2 / 3" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-308" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#388DBC"></path></marker></defs><path d="M 185.114 361.776 L 164.579 367.794" fill="none" stroke="#388DBC" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / frustum plane 2 / 4" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-309" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#388DBC"></path></marker></defs><path d="M 164.579 367.794 L 164.579 400.972" fill="none" stroke="#388DBC" stroke-width="1.867"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 2-0 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-310" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#388DBC"></path></marker></defs><path d="M 85.646 365.899 L 164.579 400.972" fill="none" stroke="#388DBC" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 2-1 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-311" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#388DBC"></path></marker></defs><path d="M 85.646 365.899 L 185.114 394.954" fill="none" stroke="#388DBC" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 2-2 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-312" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#388DBC"></path></marker></defs><path d="M 85.646 365.899 L 185.114 361.776" fill="none" stroke="#388DBC" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="PRE / camera rotations / ray 2-3 / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="down"><defs><marker id="arrow-313" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#388DBC"></path></marker></defs><path d="M 85.646 365.899 L 164.579 367.794" fill="none" stroke="#388DBC" stroke-width="1.333"></path></svg>
+    <div class="method-shape" data-shape="PRE / image features / frame 0" aria-hidden="true" style="left:75.34742%;top:43.15805%;width:12.34841%;height:8.61487%;background:#171515;border:0.19056cqw solid #B5CADB;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-0-0" aria-hidden="true" style="left:76.27354%;top:43.80415%;width:2.26386%;height:1.57938%;background:#D9EAF8;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-0-1" aria-hidden="true" style="left:78.89758%;top:43.80415%;width:2.26386%;height:1.57938%;background:#6DB0DA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-0-2" aria-hidden="true" style="left:81.52163%;top:43.80415%;width:2.26386%;height:1.57938%;background:#86B7D5;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-0-3" aria-hidden="true" style="left:84.14566%;top:43.80415%;width:2.26386%;height:1.57938%;background:#D9EAF8;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-1-0" aria-hidden="true" style="left:76.27354%;top:45.63481%;width:2.26386%;height:1.57938%;background:#B6D7EA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-1-1" aria-hidden="true" style="left:78.89758%;top:45.63481%;width:2.26386%;height:1.57938%;background:#D6E5EF;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-1-2" aria-hidden="true" style="left:81.52163%;top:45.63481%;width:2.26386%;height:1.57938%;background:#A5CDE9;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-1-3" aria-hidden="true" style="left:84.14566%;top:45.63481%;width:2.26386%;height:1.57938%;background:#B6D7EA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-2-0" aria-hidden="true" style="left:76.27354%;top:47.46548%;width:2.26386%;height:1.57938%;background:#D9EAF8;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-2-1" aria-hidden="true" style="left:78.89758%;top:47.46548%;width:2.26386%;height:1.57938%;background:#6DB0DA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-2-2" aria-hidden="true" style="left:81.52163%;top:47.46548%;width:2.26386%;height:1.57938%;background:#86B7D5;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-2-3" aria-hidden="true" style="left:84.14566%;top:47.46548%;width:2.26386%;height:1.57938%;background:#D9EAF8;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-3-0" aria-hidden="true" style="left:76.27354%;top:49.29614%;width:2.26386%;height:1.57938%;background:#B6D7EA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-3-1" aria-hidden="true" style="left:78.89758%;top:49.29614%;width:2.26386%;height:1.57938%;background:#D6E5EF;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-3-2" aria-hidden="true" style="left:81.52163%;top:49.29614%;width:2.26386%;height:1.57938%;background:#A5CDE9;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 0-3-3" aria-hidden="true" style="left:84.14566%;top:49.29614%;width:2.26386%;height:1.57938%;background:#B6D7EA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / frame 1" aria-hidden="true" style="left:77.14823%;top:42.61962%;width:12.34841%;height:8.61487%;background:#171515;border:0.19056cqw solid #B5CADB;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-0-0" aria-hidden="true" style="left:78.07435%;top:43.26572%;width:2.26386%;height:1.57938%;background:#A5CDE9;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-0-1" aria-hidden="true" style="left:80.69839%;top:43.26572%;width:2.26386%;height:1.57938%;background:#B6D7EA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-0-2" aria-hidden="true" style="left:83.32244%;top:43.26572%;width:2.26386%;height:1.57938%;background:#D6E5EF;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-0-3" aria-hidden="true" style="left:85.94647%;top:43.26572%;width:2.26386%;height:1.57938%;background:#A5CDE9;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-1-0" aria-hidden="true" style="left:78.07435%;top:45.09638%;width:2.26386%;height:1.57938%;background:#86B7D5;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-1-1" aria-hidden="true" style="left:80.69839%;top:45.09638%;width:2.26386%;height:1.57938%;background:#D9EAF8;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-1-2" aria-hidden="true" style="left:83.32244%;top:45.09638%;width:2.26386%;height:1.57938%;background:#6DB0DA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-1-3" aria-hidden="true" style="left:85.94647%;top:45.09638%;width:2.26386%;height:1.57938%;background:#86B7D5;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-2-0" aria-hidden="true" style="left:78.07435%;top:46.92705%;width:2.26386%;height:1.57938%;background:#A5CDE9;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-2-1" aria-hidden="true" style="left:80.69839%;top:46.92705%;width:2.26386%;height:1.57938%;background:#B6D7EA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-2-2" aria-hidden="true" style="left:83.32244%;top:46.92705%;width:2.26386%;height:1.57938%;background:#D6E5EF;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-2-3" aria-hidden="true" style="left:85.94647%;top:46.92705%;width:2.26386%;height:1.57938%;background:#A5CDE9;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-3-0" aria-hidden="true" style="left:78.07435%;top:48.75771%;width:2.26386%;height:1.57938%;background:#86B7D5;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-3-1" aria-hidden="true" style="left:80.69839%;top:48.75771%;width:2.26386%;height:1.57938%;background:#D9EAF8;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-3-2" aria-hidden="true" style="left:83.32244%;top:48.75771%;width:2.26386%;height:1.57938%;background:#6DB0DA;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 1-3-3" aria-hidden="true" style="left:85.94647%;top:48.75771%;width:2.26386%;height:1.57938%;background:#86B7D5;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / frame 2" aria-hidden="true" style="left:78.94904%;top:42.08119%;width:12.34841%;height:8.61487%;background:#171515;border:0.19056cqw solid #B5CADB;border-radius:0;" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-0-0" aria-hidden="true" style="left:79.87516%;top:42.72729%;width:2.26386%;height:1.57938%;background:#6DB0DA;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1000" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-0-1" aria-hidden="true" style="left:82.49920%;top:42.72729%;width:2.26386%;height:1.57938%;background:#86B7D5;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1055" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-0-2" aria-hidden="true" style="left:85.12325%;top:42.72729%;width:2.26386%;height:1.57938%;background:#D9EAF8;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1110" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-0-3" aria-hidden="true" style="left:87.74729%;top:42.72729%;width:2.26386%;height:1.57938%;background:#6DB0DA;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1165" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-1-0" aria-hidden="true" style="left:79.87516%;top:44.55795%;width:2.26386%;height:1.57938%;background:#D6E5EF;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1055" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-1-1" aria-hidden="true" style="left:82.49920%;top:44.55795%;width:2.26386%;height:1.57938%;background:#A5CDE9;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1110" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-1-2" aria-hidden="true" style="left:85.12325%;top:44.55795%;width:2.26386%;height:1.57938%;background:#B6D7EA;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1165" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-1-3" aria-hidden="true" style="left:87.74729%;top:44.55795%;width:2.26386%;height:1.57938%;background:#D6E5EF;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1220" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-2-0" aria-hidden="true" style="left:79.87516%;top:46.38862%;width:2.26386%;height:1.57938%;background:#6DB0DA;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1110" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-2-1" aria-hidden="true" style="left:82.49920%;top:46.38862%;width:2.26386%;height:1.57938%;background:#86B7D5;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1165" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-2-2" aria-hidden="true" style="left:85.12325%;top:46.38862%;width:2.26386%;height:1.57938%;background:#D9EAF8;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1220" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-2-3" aria-hidden="true" style="left:87.74729%;top:46.38862%;width:2.26386%;height:1.57938%;background:#6DB0DA;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1275" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-3-0" aria-hidden="true" style="left:79.87516%;top:48.21928%;width:2.26386%;height:1.57938%;background:#D6E5EF;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1165" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-3-1" aria-hidden="true" style="left:82.49920%;top:48.21928%;width:2.26386%;height:1.57938%;background:#A5CDE9;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1220" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-3-2" aria-hidden="true" style="left:85.12325%;top:48.21928%;width:2.26386%;height:1.57938%;background:#B6D7EA;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1275" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / image features / cell 2-3-3" aria-hidden="true" style="left:87.74729%;top:48.21928%;width:2.26386%;height:1.57938%;background:#D6E5EF;border-radius:0;" data-feature-cell="" data-reveal="" data-delay="1330" data-direction="down"></div>
+    <div class="method-shape" data-shape="PRE / bbox and keypoints / frame 0" aria-hidden="true" style="left:46.67601%;top:43.15805%;width:12.34841%;height:8.61487%;background:transparent;border:none;border-radius:0;" data-reveal="" data-delay="800" data-direction="down"></div>
+    <div class="method-picture" data-shape="PRE / video / REAL SOURCE / v15" style="left:46.99528%;top:43.38527%;width:11.74730%;height:8.19657%;" data-reveal="" data-delay="800" data-direction="down"><img src="static/images/method-116-pre-video.png" alt="PRE: video" loading="lazy" decoding="async" style="width:300.94195%;height:100.00000%;left:-201.01718%;top:-0.00000%;"></div>
+    <div class="method-shape" data-shape="PRE / bbox and keypoints / frame 1" aria-hidden="true" style="left:48.47682%;top:42.61962%;width:12.34841%;height:8.61487%;background:transparent;border:none;border-radius:0;" data-reveal="" data-delay="800" data-direction="down"></div>
+    <div class="method-picture" data-shape="PRE / video / REAL SOURCE / v15" style="left:48.81837%;top:42.81999%;width:11.74728%;height:8.19657%;" data-reveal="" data-delay="800" data-direction="down"><img src="static/images/method-116-pre-video.png" alt="PRE: video" loading="lazy" decoding="async" style="width:300.94195%;height:100.00000%;left:-100.57480%;top:-0.00000%;"></div>
+    <div class="method-shape" data-shape="PRE / bbox and keypoints / frame 2" aria-hidden="true" style="left:50.27763%;top:42.08119%;width:12.34841%;height:8.61487%;background:transparent;border:none;border-radius:0;" data-reveal="" data-delay="800" data-direction="down"></div>
+    <div class="method-picture" data-shape="PRE / bbox and keypoints / annotated frame 2 / REPLACE IMAGE" style="left:50.58634%;top:42.29656%;width:11.73098%;height:8.18412%;" data-reveal="" data-delay="800" data-direction="down"><img src="static/images/method-139-pre-bbox-and-keypoints-annotated-frame-2.png" alt="PRE: bbox and keypoints: annotated frame 2" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    </div><div class="method-step" data-step="pretrain-2" data-narration="Diffusion-based motion generation"><svg class="method-connector" data-shape="PRE / condition input / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="down"><defs><marker id="arrow-104" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#49A4D2"/></marker></defs><path d="M 184.320 497.505 L 184.320 512.705" fill="none" stroke="#49A4D2" stroke-width="4.000" marker-end="url(#arrow-104)" stroke-linejoin="round"/></svg>
+    <div class="method-shape" data-shape="PRE / model" aria-hidden="true" style="left:4.31765%;top:65.59685%;width:46.26870%;height:11.96510%;background:#18242c;border:0.59551cqw solid #49A4D2;border-radius:2.17246cqw;" data-reveal="" data-delay="350" data-direction="down"></div>
+    <div class="method-text" data-shape="PRE / model label" style="left:4.28228%;top:67.98790%;width:46.13290%;height:7.54954%;" data-reveal="" data-delay="350" data-direction="down"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">Diffusion-based</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">motion generator</span></div></div>
+    </div><div class="method-step" data-step="pretrain-3" data-narration="Direct G1 motion prediction"><div class="method-shape" data-shape="PRE / output card" aria-hidden="true" style="left:4.32791%;top:81.13264%;width:91.28967%;height:16.01628%;background:#171515;border:0.59551cqw solid #D0DEE8;border-radius:2.41650cqw;" data-reveal="" data-delay="350" data-direction="down"></div>
+    <div class="method-text" data-shape="PRE / output label" style="left:5.94844%;top:82.85240%;width:27.26994%;height:13.08878%;" data-reveal="" data-delay="350" data-direction="down"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:34.6666;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Direct</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:34.6666;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">G1 </span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">motion</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:34.6666;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">prediction</span></div></div>
+    <svg class="method-connector" data-shape="PRE / motion output / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="down"><defs><marker id="arrow-111" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#49A4D2"/></marker></defs><path d="M 184.320 622.305 L 184.320 637.505" fill="none" stroke="#49A4D2" stroke-width="4.000" marker-end="url(#arrow-111)" stroke-linejoin="round"/></svg>
+    <div class="method-picture" data-shape="PRE / output motion / REAL SOURCE / v15" style="left:36.440909700000006%;top:82.42683445%;width:54.1872406%;height:13.5609211%;" data-reveal="" data-delay="350" data-direction="down"><img src="static/images/method-140-pre-output-motion.png" alt="PRE: output motion" loading="lazy" decoding="async" style="width:100.00000%;height:101.92745%;left:-0.00000%;top:-1.92745%;"></div>
+</div><div class="method-step" data-step="pretrain-4" data-narration="Preceding segment for the AR variant"><div class="method-shape" data-shape="PRE / optional prefix" aria-hidden="true" style="left:57.72104%;top:63.21719%;width:37.59123%;height:16.73755%;background:#241e2d;border:0.67538cqw dashed #9470C3;border-radius:3.03898cqw;" data-reveal="" data-delay="0" data-direction="left"></div>
+    <div class="method-text" data-shape="PRE / prefix label" style="left:57.73%;top:64.2%;width:37.59%;height:7.55%;" data-reveal="" data-delay="0" data-direction="left"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:31.9056;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#bb9ee0;--native-font:32.4654;">Preceding<br>segment</span></div></div>
+    <div class="method-text" data-shape="PRE / prefix optional" style="left:57.73%;top:71.3%;width:37.59%;height:8.6%;" data-reveal="" data-delay="0" data-direction="left"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:30.7861;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));color:#abb4bd;--native-font:30.7861;">(AR generator<br>only)</span></div></div>
+    <svg class="method-connector" data-shape="PRE / optional context input / 1" viewbox="0 0 559.748 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="600" data-direction="left"><defs><marker id="arrow-110" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#9470C3"/></marker></defs><path d="M 323.092 574.358 L 296.756 574.323" fill="none" stroke="#9470C3" stroke-width="4.000" marker-end="url(#arrow-110)" stroke-linejoin="round"/></svg>
+    </div></section>
+<p class="method-stage-status" role="status" aria-live="polite"></p>
+</div>
+<div class="method-part" data-stage="posttrain">
+    <div class="method-local-controls" hidden=""><div class="method-controls-line"><span class="method-control-caption">Post-train</span><button class="method-replay" type="button" aria-label="Replay Post-train">↻ Replay</button></div><div class="method-progress" role="group" aria-label="posttrain animation states"><button type="button" class="method-progress-stop" data-seek="0" aria-label="1. Continue to post-training" title="1. Continue to post-training"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="1" aria-label="2. Input video → motion generator" title="2. Input video → motion generator"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="2" aria-label="3. Generate motion candidates" title="3. Generate motion candidates"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="3" aria-label="4. Track candidates and compare tracking results" title="4. Track candidates and compare tracking results"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="4" aria-label="5. Read the four tracking rewards" title="5. Read the four tracking rewards"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="5" aria-label="6. Construct motion preferences" title="6. Construct motion preferences"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="6" aria-label="7. DPO update" title="7. DPO update"><span aria-hidden="true"></span></button></div></div><section class="method-stage method-stage-posttrain method-canvas" aria-label="Post-training with motion tracking feedback" style="--stage-width:907.087;--stage-height:802.3333333333334;">
+    <div class="method-step method-transition" data-step="posttrain-intro" data-transition="" data-narration="Continue to post-training"><svg class="method-connector method-transition-right" viewBox="0 0 907.087 802.3333333333334" aria-hidden="true" data-reveal="" data-delay="0" data-direction="right"><path d="M -46.8 48.7 L 24 48.7 L 24 40 L 46.8 52.7 L 24 65.4 L 24 56.7 L -46.8 56.7 Z" fill="#a1afb4"></path></svg><h3 class="method-text" data-shape="POST / heading" style="left:0.00000%;top:3.54112%;width:99.99996%;height:6.34555%;" data-reveal="" data-delay="600" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:40.0;">Post-Training with Motion Tracking Feedback</span></div></h3>
+    </div><div class="method-step" data-step="posttrain-0" data-narration="Input video → motion generator"><div class="method-shape" data-shape="POST / generation card" aria-hidden="true" style="left:2.67235%;top:11.32050%;width:43.91664%;height:52.46210%;background:#171515;border:0.36748cqw solid #49A5D3;border-radius:1.72373cqw;" data-reveal="" data-delay="0" data-direction="right"></div>
+    <div class="method-text" data-shape="POST / tracking title" style="left:2.65051%;top:11.32051%;width:43.91664%;height:5.07610%;" data-reveal="" data-delay="0" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Motion </span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">generation</span></div></div>
+    <div class="method-shape" data-shape="OFFLINE / generator" aria-hidden="true" style="left:28.51764%;top:51.57291%;width:16.62499%;height:9.57208%;background:#18242c;border:0.36748cqw solid #49A5D3;border-radius:1.35467cqw;" data-reveal="" data-delay="800" data-direction="right"></div>
+    <div class="method-text" data-shape="OFFLINE / generator label" style="left:29.31903%;top:52.99314%;width:15.02222%;height:7.54954%;" data-reveal="" data-delay="800" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">Motion</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">generator</span></div></div>
+    <div class="method-shape" data-shape="PRE / bbox and keypoints / frame 2" aria-hidden="true" style="left:4.12500%;top:52.02070%;width:8.55365%;height:9.67043%;background:#171515;border:0.07688cqw solid #B5CADB;border-radius:0;" data-reveal="" data-delay="100" data-direction="right"></div>
+    <div class="method-picture" data-shape="PRE / video / REAL SOURCE / v15" style="left:4.31569%;top:52.24060%;width:8.17228%;height:9.23064%;" data-reveal="" data-delay="100" data-direction="right"><img src="static/images/method-166-pre-video.png" alt="PRE: video" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-shape" data-shape="PRE / bbox and keypoints / frame 2" aria-hidden="true" style="left:10.04167%;top:51.33445%;width:8.55365%;height:9.67043%;background:#171515;border:0.07688cqw solid #B5CADB;border-radius:0;" data-reveal="" data-delay="100" data-direction="right"></div>
+    <div class="method-picture" data-shape="PRE / video / REAL SOURCE / v15" style="left:10.23235%;top:51.55434%;width:8.17228%;height:9.23064%;" data-reveal="" data-delay="100" data-direction="right"><img src="static/images/method-169-pre-video.png" alt="PRE: video" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-shape" data-shape="PRE / bbox and keypoints / frame 2" aria-hidden="true" style="left:16.00750%;top:50.68933%;width:8.55365%;height:9.67043%;background:#171515;border:0.07688cqw solid #B5CADB;border-radius:0;" data-reveal="" data-delay="100" data-direction="right"></div>
+    <div class="method-picture" data-shape="PRE / video / REAL SOURCE / v15" style="left:16.19818%;top:50.90923%;width:8.17228%;height:9.23064%;" data-reveal="" data-delay="100" data-direction="right"><img src="static/images/method-172-pre-video.png" alt="PRE: video" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <svg class="method-connector" data-shape="PRE / condition input / 1" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="500" data-direction="right"><defs><marker id="arrow-226" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#49A4D2"/></marker></defs><path d="M 224.847 451.773 L 244.886 452.020" fill="none" stroke="#49A4D2" stroke-width="4.000" marker-end="url(#arrow-226)" stroke-linejoin="round"/></svg>
+    </div><div class="method-step" data-step="posttrain-1" data-narration="Generate motion candidates"><svg class="method-connector" data-shape="Elbow Connector 328" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="up"><defs><marker id="arrow-329" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#48A4D3"/></marker></defs><path d="M 334.081 413.787 L 334.081 409.000 L 223.473 409.000 L 223.473 398.100" fill="none" stroke="#48A4D3" stroke-width="4.000" marker-end="url(#arrow-329)" stroke-linejoin="round"/></svg>
+    <div class="method-text" data-shape="POST / deployable rollout 1 / candidate ID" style="left:6.29337%;top:35.08159%;width:2.17074%;height:5.07778%;" data-reveal="" data-delay="350" data-direction="up"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">B</span></div></div>
+    <div class="method-text" data-shape="POST / deployable rollout 0 / candidate ID" style="left:6.19132%;top:21.68068%;width:2.37481%;height:5.07778%;" data-reveal="" data-delay="350" data-direction="up"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">A</span></div></div>
+    <div class="method-text" data-shape="PRE / feature label" style="left:6.15718%;top:44.60849%;width:36.95328%;height:3.35609%;" data-reveal="" data-delay="350" data-direction="up"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:24.0;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">Candidates</span></div></div>
+    <div class="method-motion-strip" data-shape="POST / generated candidate 1 / motion strip" data-reveal="" data-delay="356" data-direction="up" style="left:10.62795%;top:30.15000%;width:32.44836%;height:13.43133%;"><img src="static/images/method-149-post-generated-candidate-1-time-0.png" alt="POST: generated candidate 1: time 0" loading="lazy" decoding="async"><img src="static/images/method-156-post-generated-candidate-1-time-1.png" alt="POST: generated candidate 1: time 1" loading="lazy" decoding="async"><img src="static/images/method-157-post-generated-candidate-1-time-2.png" alt="POST: generated candidate 1: time 2" loading="lazy" decoding="async"></div><div class="method-motion-strip" data-shape="POST / generated candidate 0 / motion strip" data-reveal="" data-delay="356" data-direction="up" style="left:10.62795%;top:17.17427%;width:32.44836%;height:13.006149999999998%;"><img src="static/images/method-158-post-generated-candidate-0-time-0.png" alt="POST: generated candidate 0: time 0" loading="lazy" decoding="async"><img src="static/images/method-159-post-generated-candidate-0-time-1.png" alt="POST: generated candidate 0: time 1" loading="lazy" decoding="async"><img src="static/images/method-160-post-generated-candidate-0-time-2.png" alt="POST: generated candidate 0: time 2" loading="lazy" decoding="async"></div></div><div class="method-step" data-step="posttrain-2" data-narration="Track candidates and compare tracking results"><div class="method-shape" data-shape="POST / tracking card" aria-hidden="true" style="left:50.17998%;top:11.32050%;width:47.16446%;height:85.79084%;background:#171515;border:0.36748cqw solid #379C7D;border-radius:1.91441cqw;" data-reveal="" data-delay="300" data-direction="right"></div>
+    <div class="method-text" data-shape="POST / tracking title" style="left:50.16665%;top:11.32051%;width:46.50375%;height:5.07610%;" data-reveal="" data-delay="300" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Motion tracking</span></div></div>
+    <svg class="method-connector" data-shape="POST / tracker separator / 1" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="500" data-direction="right"><defs><marker id="arrow-27" viewbox="0 0 10 10" refx="8" refy="5" markerwidth="3.2" markerheight="3.2" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#DCE4E3"></path></marker></defs><path d="M 469.587 438.768 L 871.513 439.317" fill="none" stroke="#DCE4E3" stroke-width="1.333"></path></svg>
+    <svg class="method-connector" data-shape="POST / generation to tracking / 1" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-227" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#389C7C"/></marker></defs><path d="M 422.603 301.289 L 442.640 301.289" fill="none" stroke="#389C7C" stroke-width="4.000" marker-end="url(#arrow-227)" stroke-linejoin="round"/></svg>
+    <div class="method-text" data-shape="POST / deployable rollout 0 / candidate ID" style="left:54.79513%;top:30.94346%;width:2.37481%;height:5.07778%;" data-reveal="" data-delay="700" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">A</span></div></div>
+    <div class="method-text" data-shape="POST / deployable rollout 1 / candidate ID" style="left:54.89718%;top:44.34438%;width:2.17074%;height:5.07778%;" data-reveal="" data-delay="700" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">B</span></div></div>
+    <div class="method-shape" data-shape="POST / green target key" aria-hidden="true" style="left:51.90000%;top:93.66983%;width:1.22766%;height:1.38795%;background:#29C44D;border-radius:50%;" data-reveal="" data-delay="700" data-direction="right"></div>
+    <div class="method-shape" data-shape="POST / red target key" aria-hidden="true" style="left:54.12250%;top:93.66983%;width:1.22766%;height:1.38795%;background:#EC4148;border-radius:50%;" data-reveal="" data-delay="700" data-direction="right"></div>
+    <div class="method-text" data-shape="POST / target legend" style="left:56.3%;top:91.59295%;width:40%;height:5.07778%;" data-reveal="" data-delay="700" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:left;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">Tracking t</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">argets</span></div></div>
+    <div class="method-shape" data-shape="POST / deployable tracker block" aria-hidden="true" style="left:51.74941%;top:19.02370%;width:30.68547%;height:6.10220%;background:#17261f;border:0.36748cqw solid #379C7D;border-radius:0.86360cqw;" data-reveal="" data-delay="500" data-direction="right"></div>
+    <div class="method-text" data-shape="POST / deployable tracker label" style="left:52.26512%;top:19.59657%;width:29.65406%;height:5.07610%;" data-reveal="" data-delay="500" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#8bc6aa;--native-font:32.0;">Deployable tracker</span></div></div>
+    <div class="method-picture" data-shape="POST / deployable rollout 0 / time 0 / REAL SOURCE / v17" style="left:59.23176%;top:27.61943%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-202-post-deployable-rollout-0-time-0.png" alt="POST: deployable rollout 0: time 0" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / deployable rollout 0 / time 1 / REAL SOURCE / v17" style="left:70.23775%;top:27.61943%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-203-post-deployable-rollout-0-time-1.png" alt="POST: deployable rollout 0: time 1" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / deployable rollout 0 / time 2 / REAL SOURCE / v17" style="left:81.23775%;top:27.61943%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-204-post-deployable-rollout-0-time-2.png" alt="POST: deployable rollout 0: time 2" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / deployable rollout 1 / time 0 / REAL SOURCE / v17" style="left:59.23176%;top:41.02034%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-205-post-deployable-rollout-1-time-0.png" alt="POST: deployable rollout 1: time 0" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / deployable rollout 1 / time 1 / REAL SOURCE / v17" style="left:70.23775%;top:41.02034%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-206-post-deployable-rollout-1-time-1.png" alt="POST: deployable rollout 1: time 1" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / deployable rollout 1 / time 2 / REAL SOURCE / v17" style="left:81.23775%;top:41.02034%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-207-post-deployable-rollout-1-time-2.png" alt="POST: deployable rollout 1: time 2" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-text" data-shape="POST / global rollout 0 / candidate ID" style="left:54.79513%;top:69.16566%;width:2.37481%;height:5.07778%;" data-reveal="" data-delay="700" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">A</span></div></div>
+    <div class="method-text" data-shape="POST / global rollout 1 / candidate ID" style="left:54.89718%;top:82.56657%;width:2.17074%;height:5.07778%;" data-reveal="" data-delay="700" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">B</span></div></div>
+    <div class="method-shape" data-shape="POST / privileged tracker block" aria-hidden="true" style="left:51.59627%;top:57.22845%;width:30.68547%;height:6.10220%;background:#17261f;border:0.36748cqw solid #379C7D;border-radius:0.86360cqw;" data-reveal="" data-delay="500" data-direction="right"></div>
+    <div class="method-text" data-shape="POST / privileged tracker label" style="left:53.26709%;top:57.80133%;width:27.34381%;height:5.07610%;" data-reveal="" data-delay="500" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#8bc6aa;--native-font:32.0;">Privileged tracker</span></div></div>
+    <div class="method-picture" data-shape="POST / global rollout 0 / time 0 / REAL SOURCE / v17" style="left:59.23176%;top:65.84162%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-208-post-global-rollout-0-time-0.png" alt="POST: global rollout 0: time 0" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / global rollout 0 / time 1 / REAL SOURCE / v17" style="left:70.23775%;top:65.84162%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-209-post-global-rollout-0-time-1.png" alt="POST: global rollout 0: time 1" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / global rollout 0 / time 2 / REAL SOURCE / v17" style="left:81.23775%;top:65.84162%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-212-post-global-rollout-0-time-2.png" alt="POST: global rollout 0: time 2" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / global rollout 1 / time 0 / REAL SOURCE / v17" style="left:59.23176%;top:79.24254%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-213-post-global-rollout-1-time-0.png" alt="POST: global rollout 1: time 0" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / global rollout 1 / time 1 / REAL SOURCE / v17" style="left:70.23775%;top:79.24254%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-214-post-global-rollout-1-time-1.png" alt="POST: global rollout 1: time 1" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="POST / global rollout 1 / time 2 / REAL SOURCE / v17" style="left:81.23775%;top:79.24254%;width:10.47750%;height:11.84545%;" data-reveal="" data-delay="700" data-direction="right"><img src="static/images/method-215-post-global-rollout-1-time-2.png" alt="POST: global rollout 1: time 2" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    </div><div class="method-step" data-step="posttrain-3" data-narration="Read the four tracking rewards"><div class="method-text" data-shape="POST / local reward / R" style="left:86.87300%;top:17.15373%;width:2.17073%;height:5.07778%;" data-reveal="" data-delay="450" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">R</span></div></div>
+    <div class="method-text" data-shape="POST / local reward / subscript" style="left:88.97720%;top:18.35433%;width:6.25245%;height:4.23204%;" data-reveal="" data-delay="450" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:26.6666;">local</span></div></div>
+    <div class="method-text" data-shape="POST / success reward / R" style="left:86.87328%;top:21.88316%;width:2.17073%;height:5.07778%;" data-reveal="" data-delay="450" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">R</span></div></div>
+    <div class="method-text" data-shape="POST / success reward / subscript" style="left:88.97748%;top:23.08375%;width:5.77007%;height:4.23204%;" data-reveal="" data-delay="450" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:26.6666;">succ</span></div></div>
+    <svg class="method-connector" data-shape="Elbow Connector 315" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-316" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#379C7D"/></marker></defs><path d="M 747.756 177.113 L 767.885 177.113 L 767.885 158.001 L 774.415 158.001" fill="none" stroke="#379C7D" stroke-width="4.000" marker-end="url(#arrow-316)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="Elbow Connector 325" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-326" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#379C7D"/></marker></defs><path d="M 747.756 177.113 L 767.885 177.113 L 767.885 195.946 L 774.415 195.946" fill="none" stroke="#379C7D" stroke-width="4.000" marker-end="url(#arrow-326)" stroke-linejoin="round"/></svg>
+    <div class="method-text" data-shape="POST / global reward / R" style="left:86.71993%;top:55.35850%;width:2.17074%;height:5.07778%;" data-reveal="" data-delay="450" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">R</span></div></div>
+    <div class="method-text" data-shape="POST / global reward / subscript" style="left:88.82414%;top:56.55909%;width:7.90368%;height:4.23204%;" data-reveal="" data-delay="450" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:26.6666;">global</span></div></div>
+    <div class="method-text" data-shape="POST / privileged success reward / R" style="left:86.72012%;top:60.08791%;width:2.17073%;height:5.07778%;" data-reveal="" data-delay="450" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">R</span></div></div>
+    <div class="method-text" data-shape="POST / privileged success reward / subscript" style="left:88.82432%;top:61.28850%;width:5.77007%;height:4.23204%;" data-reveal="" data-delay="450" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:26.6666;">succ</span></div></div>
+    <svg class="method-connector" data-shape="Elbow Connector 329" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-330" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#379C7D"/></marker></defs><path d="M 746.367 483.643 L 766.496 483.643 L 766.496 464.530 L 773.026 464.530" fill="none" stroke="#379C7D" stroke-width="4.000" marker-end="url(#arrow-330)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="Elbow Connector 332" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-333" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#379C7D"/></marker></defs><path d="M 746.367 483.643 L 766.496 483.643 L 766.496 502.476 L 773.026 502.476" fill="none" stroke="#379C7D" stroke-width="4.000" marker-end="url(#arrow-333)" stroke-linejoin="round"/></svg>
+    </div><div class="method-step" data-step="posttrain-4" data-narration="Construct motion preferences"><div class="method-shape" data-shape="POST / DPO card" aria-hidden="true" style="left:2.67235%;top:68.85869%;width:43.91664%;height:28.26402%;background:transparent;border:0.36748cqw solid #379C7D;border-radius:1.55025cqw;" data-reveal="" data-delay="300" data-direction="left"></div>
+    <div class="method-text" data-shape="POST / DPO title" style="left:2.65051%;top:68.85869%;width:43.91665%;height:5.07610%;" data-reveal="" data-delay="300" data-direction="left"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Preference optimization</span></div></div>
+    <svg class="method-connector" data-shape="POST / preferences to DPO / 1" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="left"><defs><marker id="arrow-228" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#389C7C"/></marker></defs><path d="M 456.240 665.862 L 436.203 665.862" fill="none" stroke="#389C7C" stroke-width="4.000" marker-end="url(#arrow-228)" stroke-linejoin="round"/></svg>
+    <div class="method-text" data-shape="POST / DPO likelihood 0" style="left:36.95946%;top:77.67138%;width:8.33042%;height:7.54954%;" data-reveal="" data-delay="950" data-direction="left"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:28.5732;">More</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:28.5732;">likely</span></div></div>
+    <div class="method-text" data-shape="POST / DPO candidate 0 / candidate ID" style="left:6.15718%;top:78.73218%;width:2.37481%;height:5.07778%;" data-reveal="" data-delay="500" data-direction="left"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">A</span></div></div>
+    <div class="method-text" data-shape="POST / DPO candidate 1 / candidate ID" style="left:6.24589%;top:89.03724%;width:2.17074%;height:5.07778%;" data-reveal="" data-delay="500" data-direction="left"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#dc969b;--native-font:32.0;">B</span></div></div>
+    <div class="method-text" data-shape="POST / DPO likelihood 1" style="left:36.96468%;top:88.17101%;width:8.29332%;height:7.54954%;" data-reveal="" data-delay="950" data-direction="left"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#dc969b;--native-font:28.5732;">Less</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#dc969b;--native-font:28.5732;">likely</span></div></div>
+    <svg class="method-connector" data-shape="POST / DPO preference 0 / 1" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-likelihood-arrow="" data-reveal="" data-delay="950" data-direction="left"><defs><marker id="arrow-189" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#1784BB"/></marker></defs><path d="M 322.799 681.364 L 322.799 630.492" fill="none" stroke="#1784BB" stroke-width="4.000" marker-end="url(#arrow-189)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="POST / DPO preference 1 / 1" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-likelihood-arrow="" data-reveal="" data-delay="950" data-direction="left"><defs><marker id="arrow-195" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#C75B60"/></marker></defs><path d="M 322.678 705.134 L 322.678 756.006" fill="none" stroke="#C75B60" stroke-width="4.000" marker-end="url(#arrow-195)" stroke-linejoin="round"/></svg>
+    <div class="method-motion-strip" data-shape="POST / DPO candidate 0 / motion strip" data-reveal="" data-delay="500" data-direction="left" style="left:9.21797%;top:75.7671%;width:24.778619999999997%;height:10.529290000000003%;"><img src="static/images/method-158-post-generated-candidate-0-time-0.png" alt="POST: DPO candidate 0: time 0" loading="lazy" decoding="async"><img src="static/images/method-159-post-generated-candidate-0-time-1.png" alt="POST: DPO candidate 0: time 1" loading="lazy" decoding="async"><img src="static/images/method-160-post-generated-candidate-0-time-2.png" alt="POST: DPO candidate 0: time 2" loading="lazy" decoding="async"></div><div class="method-motion-strip" data-shape="POST / DPO candidate 1 / motion strip" data-reveal="" data-delay="500" data-direction="left" style="left:9.20464%;top:86.07216%;width:24.778620000000004%;height:10.529290000000003%;"><img src="static/images/method-149-post-generated-candidate-1-time-0.png" alt="POST: DPO candidate 1: time 0" loading="lazy" decoding="async"><img src="static/images/method-156-post-generated-candidate-1-time-1.png" alt="POST: DPO candidate 1: time 1" loading="lazy" decoding="async"><img src="static/images/method-157-post-generated-candidate-1-time-2.png" alt="POST: DPO candidate 1: time 2" loading="lazy" decoding="async"></div></div><div class="method-step" data-step="posttrain-5" data-narration="DPO update"><svg class="method-connector" data-shape="Down Arrow 369" viewbox="0 0 907.087 802.3333333333334" aria-hidden="true" style="" data-direction="up" data-reveal="" data-delay="0"><path d="M 325 554.15 L 325 506 L 316 506 L 334.2 494 L 352.4 506 L 343.4 506 L 343.4 554.15 Z" fill="#60afc3"/></svg>
+    <div class="method-text" data-shape="TextBox 372" style="left:14.98499%;top:63.18440%;width:22.44700%;height:6.04098%;" data-reveal="" data-delay="150" data-direction="up"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">DPO</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;"> </span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#abb4bd;--native-font:32.0;">update</span></div></div>
+    </div></section>
+<p class="method-stage-status" role="status" aria-live="polite"></p>
+</div>
+<div class="method-part" data-stage="deploy">
+    <div class="method-local-controls" hidden=""><div class="method-controls-line"><span class="method-control-caption">Deploy</span><button class="method-replay" type="button" aria-label="Replay Deploy">↻ Replay</button></div><div class="method-progress" role="group" aria-label="deploy animation states"><button type="button" class="method-progress-stop" data-seek="0" aria-label="1. Continue to deployment" title="1. Continue to deployment"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="1" aria-label="2. Offline: input video" title="2. Offline: input video"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="2" aria-label="3. Offline: generate and track" title="3. Offline: generate and track"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="3" aria-label="4. Offline: real-world execution" title="4. Offline: real-world execution"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="4" aria-label="5. Online: live video inputs" title="5. Online: live video inputs"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="5" aria-label="6. Online: generate and track" title="6. Online: generate and track"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="6" aria-label="7. Online: real-world execution" title="7. Online: real-world execution"><span aria-hidden="true"></span></button><button type="button" class="method-progress-stop" data-seek="7" aria-label="8. Online: preceding-segment feedback" title="8. Online: preceding-segment feedback"><span aria-hidden="true"></span></button></div></div><section class="method-stage method-stage-deploy method-canvas" aria-label="Real-world deployment" style="--stage-width:687.8316666666665;--stage-height:802.3333333333334;">
+    <div class="method-step method-transition" data-step="deploy-intro" data-transition="" data-narration="Continue to deployment"><svg class="method-connector method-transition-right" viewBox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" data-reveal="" data-delay="0" data-direction="right"><path d="M -46.8 48.7 L 24 48.7 L 24 40 L 46.8 52.7 L 24 65.4 L 24 56.7 L -46.8 56.7 Z" fill="#a1afb4"></path></svg><h3 class="method-text" data-shape="DEPLOY / heading" style="left:-0.00005%;top:3.54112%;width:100.00616%;height:6.34555%;" data-reveal="" data-delay="600" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:40.0;">Real-World Deployment</span></div></h3>
+    </div><div class="method-step" data-step="deploy-0" data-narration="Offline: input video"><div class="method-shape" data-shape="OFFLINE / panel" aria-hidden="true" style="left:3.51582%;top:11.32053%;width:92.97276%;height:21.71619%;background:#171515;border:0.48461cqw solid #E1C082;border-radius:1.99635cqw;" data-reveal="" data-delay="0" data-direction="right"></div>
+    <div class="method-text" data-shape="OFFLINE / heading" style="left:3.51582%;top:11.32051%;width:92.97276%;height:5.07610%;" data-reveal="" data-delay="0" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Offline</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;"> generation</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;"> · </span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Video-to-Humanoid</span></div></div>
+    <div class="method-picture" data-shape="OFFLINE / input / REAL SOURCE / v16" style="left:5.41593%;top:18.97819%;width:15.34907%;height:13.16161%;" data-reveal="" data-delay="200" data-direction="right"><img src="static/images/method-223-offline-input.png" alt="OFFLINE: input" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    </div><div class="method-step" data-step="deploy-1" data-narration="Offline: generate and track"><svg class="method-connector" data-shape="OFFLINE / reference flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="650" data-direction="right"><defs><marker id="arrow-239" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#379C7D"/></marker></defs><path d="M 342.602 204.108 L 362.640 204.108" fill="none" stroke="#379C7D" stroke-width="4.000" marker-end="url(#arrow-239)" stroke-linejoin="round"/></svg>
+    <div class="method-shape" data-shape="OFFLINE / motion tracker" aria-hidden="true" style="left:54.69387%;top:20.65330%;width:19.64167%;height:9.57208%;background:#17261f;border:0.48461cqw solid #379C7D;border-radius:1.78648cqw;" data-reveal="" data-delay="900" data-direction="right"></div>
+    <div class="method-text" data-shape="OFFLINE / tracker label" style="left:57.06437%;top:22.07353%;width:14.90062%;height:7.54954%;" data-reveal="" data-delay="900" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#8bc6aa;--native-font:32.0;">Motion</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#8bc6aa;--native-font:32.0;">tracker</span></div></div>
+    <div class="method-shape" data-shape="OFFLINE / generator" aria-hidden="true" style="left:25.63715%;top:20.65330%;width:24.17290%;height:9.57208%;background:#18242c;border:0.48461cqw solid #49A5D3;border-radius:1.78648cqw;" data-reveal="" data-delay="300" data-direction="right"></div>
+    <div class="method-text" data-shape="OFFLINE / generator label" style="left:26.68772%;top:22.07353%;width:21.85449%;height:7.54954%;" data-reveal="" data-delay="300" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">Motion</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">generator</span></div></div>
+    <svg class="method-connector" data-shape="OFFLINE / input flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-238" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#48A4D3"/></marker></defs><path d="M 142.701 204.108 L 162.739 204.108" fill="none" stroke="#48A4D3" stroke-width="4.000" marker-end="url(#arrow-238)" stroke-linejoin="round"/></svg>
+    </div><div class="method-step" data-step="deploy-2" data-narration="Offline: real-world execution"><svg class="method-connector" data-shape="OFFLINE / action flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-240" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#DD9900"/></marker></defs><path d="M 511.303 204.108 L 531.296 204.108" fill="none" stroke="#DD9900" stroke-width="4.000" marker-end="url(#arrow-240)" stroke-linejoin="round"/></svg>
+    <div class="method-picture" data-shape="OFFLINE / robot / REAL SOURCE / v16" style="left:79.21934%;top:18.97819%;width:15.34907%;height:13.16161%;" data-reveal="" data-delay="350" data-direction="right"><img src="static/images/method-224-offline-robot.png" alt="OFFLINE: robot" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    </div><div class="method-step" data-step="deploy-3" data-narration="Online: live video inputs"><div class="method-shape" data-shape="ONLINE / panel" aria-hidden="true" style="left:3.49273%;top:36.61681%;width:92.97276%;height:60.57922%;background:#171515;border:0.48461cqw solid #E1C082;border-radius:2.52340cqw;" data-reveal="" data-delay="0" data-direction="right"></div>
+    <div class="method-text" data-shape="ONLINE / heading" style="left:3.51582%;top:36.61681%;width:92.97276%;height:5.07610%;" data-reveal="" data-delay="0" data-direction="right"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">Online</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;"> generation</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;"> · </span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">V</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">ideo teleop</span><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#ede8e3;--native-font:32.0;">eration</span></div></div>
+    <div class="method-picture" data-shape="ONLINE MOTION / input / REAL SOURCE / v16" style="left:5.41593%;top:44.29520%;width:15.34907%;height:13.16161%;" data-reveal="" data-delay="200" data-direction="right"><img src="static/images/method-225-online-motion-input.png" alt="ONLINE MOTION: input" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="ONLINE OBJECT / input / REAL SOURCE / v15" style="left:5.41593%;top:72.25368%;width:15.34907%;height:13.16161%;" data-reveal="" data-delay="200" data-direction="right"><img src="static/images/method-243-online-object-input.png" alt="ONLINE OBJECT: input" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-text" data-shape="PRE / feature label" style="left:3.29858%;top:63.9519%;width:93.16691%;height:3.35609%;" data-reveal="" data-delay="0" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:24.0;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">Locomotion teleoperation</span></div></div>
+    <div class="method-text" data-shape="PRE / feature label" style="left:3.29858%;top:91.93579%;width:93.16691%;height:3.35609%;" data-reveal="" data-delay="0" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:24.0;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:400;color:#abb4bd;--native-font:32.0;">Loco-manipulation teleoperation</span></div></div>
+    </div><div class="method-step" data-step="deploy-4" data-narration="Online: generate and track"><svg class="method-connector" data-shape="ONLINE MOTION / reference flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="650" data-direction="right"><defs><marker id="arrow-251" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#379C7D"/></marker></defs><path d="M 342.602 393.795 L 362.640 393.795" fill="none" stroke="#379C7D" stroke-width="4.000" marker-end="url(#arrow-251)" stroke-linejoin="round"/></svg>
+    <div class="method-shape" data-shape="ONLINE MOTION / motion tracker" aria-hidden="true" style="left:54.69387%;top:44.29520%;width:19.64167%;height:9.57208%;background:#17261f;border:0.48461cqw solid #379C7D;border-radius:1.78648cqw;" data-reveal="" data-delay="900" data-direction="right"></div>
+    <div class="method-text" data-shape="ONLINE MOTION / tracker label" style="left:57.06437%;top:45.71544%;width:14.90062%;height:7.54954%;" data-reveal="" data-delay="900" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#8bc6aa;--native-font:32.0;">Motion</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#8bc6aa;--native-font:32.0;">tracker</span></div></div>
+    <div class="method-shape" data-shape="ONLINE MOTION / generator" aria-hidden="true" style="left:25.63715%;top:44.29520%;width:24.17290%;height:9.57208%;background:#18242c;border:0.48461cqw solid #49A5D3;border-radius:1.78648cqw;" data-reveal="" data-delay="300" data-direction="right"></div>
+    <div class="method-text" data-shape="ONLINE MOTION / generator label" style="left:25.62943%;top:45.71544%;width:24.18998%;height:7.54954%;" data-reveal="" data-delay="300" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">AR motion</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">generator</span></div></div>
+    <svg class="method-connector" data-shape="ONLINE MOTION / input flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-250" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#48A4D3"/></marker></defs><path d="M 142.701 393.795 L 162.739 393.795" fill="none" stroke="#48A4D3" stroke-width="4.000" marker-end="url(#arrow-250)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="ONLINE OBJECT / reference flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="650" data-direction="right"><defs><marker id="arrow-264" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#379C7D"/></marker></defs><path d="M 342.602 618.115 L 362.640 618.115" fill="none" stroke="#379C7D" stroke-width="4.000" marker-end="url(#arrow-264)" stroke-linejoin="round"/></svg>
+    <div class="method-shape" data-shape="ONLINE OBJECT / motion tracker" aria-hidden="true" style="left:54.69387%;top:72.25368%;width:19.64167%;height:9.57208%;background:#17261f;border:0.48461cqw solid #379C7D;border-radius:1.78648cqw;" data-reveal="" data-delay="900" data-direction="right"></div>
+    <div class="method-text" data-shape="ONLINE OBJECT / tracker label" style="left:57.06437%;top:73.67392%;width:14.90062%;height:7.54954%;" data-reveal="" data-delay="900" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#8bc6aa;--native-font:32.0;">Motion</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#8bc6aa;--native-font:32.0;">tracker</span></div></div>
+    <div class="method-shape" data-shape="ONLINE OBJECT / generator" aria-hidden="true" style="left:25.63715%;top:72.25368%;width:24.17290%;height:9.57208%;background:#18242c;border:0.48461cqw solid #49A5D3;border-radius:1.78648cqw;" data-reveal="" data-delay="300" data-direction="right"></div>
+    <div class="method-text" data-shape="ONLINE OBJECT / generator label" style="left:25.62943%;top:73.67392%;width:24.18998%;height:7.54954%;" data-reveal="" data-delay="300" data-direction="right"><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">AR motion</span></div><div class="method-paragraph" style="line-height:calc(var(--native-line-height) * 100cqw / var(--font-reference));text-align:center;--native-line-height:29.3333;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#86c5e3;--native-font:32.0;">generator</span></div></div>
+    <svg class="method-connector" data-shape="ONLINE OBJECT / input flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-263" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#48A4D3"/></marker></defs><path d="M 142.701 618.115 L 162.739 618.115" fill="none" stroke="#48A4D3" stroke-width="4.000" marker-end="url(#arrow-263)" stroke-linejoin="round"/></svg>
+    </div><div class="method-step" data-step="deploy-5" data-narration="Online: real-world execution"><svg class="method-connector" data-shape="ONLINE MOTION / action flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-252" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#DD9900"/></marker></defs><path d="M 511.303 393.795 L 531.296 393.795" fill="none" stroke="#DD9900" stroke-width="4.000" marker-end="url(#arrow-252)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="ONLINE OBJECT / action flow / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="right"><defs><marker id="arrow-265" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#DD9900"/></marker></defs><path d="M 511.303 618.115 L 531.296 618.115" fill="none" stroke="#DD9900" stroke-width="4.000" marker-end="url(#arrow-265)" stroke-linejoin="round"/></svg>
+    <div class="method-picture" data-shape="ONLINE MOTION / robot / REAL SOURCE / v16" style="left:79.21934%;top:44.29520%;width:15.34907%;height:13.16161%;" data-reveal="" data-delay="350" data-direction="right"><img src="static/images/method-229-online-motion-robot.png" alt="ONLINE MOTION: robot" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+    <div class="method-picture" data-shape="ONLINE OBJECT / robot / REAL SOURCE / v15" style="left:79.21934%;top:72.25368%;width:15.34907%;height:13.16161%;" data-reveal="" data-delay="350" data-direction="right"><img src="static/images/method-253-online-object-robot.png" alt="ONLINE OBJECT: robot" loading="lazy" decoding="async" style="width:100.00000%;height:100.00000%;left:-0.00000%;top:-0.00000%;"></div>
+</div><div class="method-step" data-step="deploy-6" data-narration="Online: preceding-segment feedback"><svg class="method-connector" data-shape="Elbow Connector 272" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="left"><defs><marker id="arrow-273" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#9470C3"/></marker></defs><path d="M 597.684 460.995 L 597.684 480.370 L 524.901 480.370" fill="none" stroke="#9470C3" stroke-width="4.000" marker-end="url(#arrow-273)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="ONLINE MOTION / prefix conditioning / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="750" data-direction="left"><defs><marker id="arrow-269" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#9470C3"/></marker></defs><path d="M 251.683 465.795 L 251.683 445.795" fill="none" stroke="#9470C3" stroke-width="4.000" marker-end="url(#arrow-269)" stroke-linejoin="round"/></svg>
+    <div class="method-shape" data-shape="ONLINE MOTION / prefix box" aria-hidden="true" style="left:25.63715%;top:57.33356%;width:48.69810%;height:5.07609%;background:#241e2d;border:0.36226cqw dashed #9470C3;border-radius:1.08190cqw;" data-reveal="" data-delay="350" data-direction="left"></div>
+    <div class="method-text" data-shape="ONLINE MOTION / prefix label" style="left:26.71039%;top:56.91397%;width:46.77844%;height:5.07610%;" data-reveal="" data-delay="350" data-direction="left"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#bb9ee0;--native-font:32;">Preceding segment</span></div></div>
+    <svg class="method-connector" data-shape="Elbow Connector 277" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="0" data-direction="left"><defs><marker id="arrow-278" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#9470C3"/></marker></defs><path d="M 597.684 685.315 L 597.684 705.122 L 524.900 705.122" fill="none" stroke="#9470C3" stroke-width="4.000" marker-end="url(#arrow-278)" stroke-linejoin="round"/></svg>
+    <svg class="method-connector" data-shape="ONLINE OBJECT / prefix conditioning / 1" viewbox="0 0 687.8316666666665 802.3333333333334" aria-hidden="true" style="" data-reveal="" data-delay="750" data-direction="left"><defs><marker id="arrow-274" viewbox="0 0 10 10" orient="auto-start-reverse" refX="2" refY="5" markerWidth="3" markerHeight="3"><path d="M0 0L10 5L0 10Z" fill="#9470C3"/></marker></defs><path d="M 251.683 690.115 L 251.683 670.115" fill="none" stroke="#9470C3" stroke-width="4.000" marker-end="url(#arrow-274)" stroke-linejoin="round"/></svg>
+    <div class="method-shape" data-shape="ONLINE MOTION / prefix box" aria-hidden="true" style="left:25.63715%;top:85.34584%;width:48.69785%;height:5.07609%;background:#241e2d;border:0.36226cqw dashed #9470C3;border-radius:1.08190cqw;" data-reveal="" data-delay="350" data-direction="left"></div>
+    <div class="method-text" data-shape="ONLINE MOTION / prefix label" style="left:26.71038%;top:84.92625%;width:46.77821%;height:5.07610%;" data-reveal="" data-delay="350" data-direction="left"><div class="method-paragraph" style="line-height:1.1;text-align:center;"><span style="font-size:calc(var(--native-font) * 100cqw / var(--font-reference));font-weight:700;color:#bb9ee0;--native-font:32;">Preceding segment</span></div></div>
+    </div></section>
+<p class="method-stage-status" role="status" aria-live="polite"></p>
+</div>
+</div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--End method -->
+
+
+<section class="hero is-small" id="real-world" aria-labelledby="real-world-title">
+    <div class="hero-body">
+        <div class="container">
+            <p class="section-eyebrow">Real-world deployment</p>
+            <h2 id="real-world-title" class="title is-2" style="margin-bottom: 0.5rem;">Real-World Deployment Results</h2>
+            <div class="video-caption" style="margin-bottom: 1rem">
+                <b>Video Teleoperation: Locomotion</b> 
+            </div>
+            <div class="video-gallery-carousel-container">
+                <!-- Navigation arrows -->
+                <button class="nav-arrow prev-arrow" id="gallery-carousel-locomotion-prev">&#10094;</button>
+                <div class="video-gallery-carousel" id="gallery-carousel-locomotion">
+                    <div class="video-single active">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/locomotion_0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/locomotion_1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/locomotion_2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/locomotion_3.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/locomotion_4.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/locomotion_5.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/locomotion_6.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation arrow -->
+                <button class="nav-arrow next-arrow" id="gallery-carousel-locomotion-next">&#10095;</button>
+            </div>
+            <div class="gallery-dots" id="gallery-carousel-locomotion-dots" style="margin-bottom: 2rem">
+                <!-- Dots will be added dynamically via JavaScript -->
+            </div>
+
+            <div class="video-caption" style="margin-bottom: 1rem">
+                <b>Video Teleoperation: Loco-manipulation</b> 
+            </div>
+            <div class="video-gallery-carousel-container">
+                <!-- Navigation arrows -->
+                <button class="nav-arrow prev-arrow" id="gallery-carousel-loco-manipulation-prev">&#10094;</button>
+                <div class="video-gallery-carousel" id="gallery-carousel-loco-manipulation">
+                    <div class="video-single active">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/loco_manipulation_0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/loco_manipulation_1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/loco_manipulation_2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/loco_manipulation_3.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/loco_manipulation_4.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/loco_manipulation_5.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="720">
+                                <source src="static/videos/loco_manipulation_6.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation arrow -->
+                <button class="nav-arrow next-arrow" id="gallery-carousel-loco-manipulation-next">&#10095;</button>
+            </div>
+            <div class="gallery-dots" id="gallery-carousel-loco-manipulation-dots"  style="margin-bottom: 2rem">
+                <!-- Dots will be added dynamically via JavaScript -->
+            </div>
+
+            <div class="video-caption" style="margin-bottom: 1rem">
+                <b>Offline Generation: Video-to-Humanoid Control</b> 
+            </div>
+            <div class="video-gallery-carousel-container">
+                <!-- Navigation arrows -->
+                <button class="nav-arrow prev-arrow" id="gallery-carousel-v2h-prev">&#10094;</button>
+                <div class="video-gallery-carousel" id="gallery-carousel-v2h">
+                    <div class="video-single active">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="370">
+                                <source src="static/videos/v2h_0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="370">
+                                <source src="static/videos/v2h_1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="370">
+                                <source src="static/videos/v2h_2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="370">
+                                <source src="static/videos/v2h_3.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="370">
+                                <source src="static/videos/v2h_4.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="370">
+                                <source src="static/videos/v2h_5.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="370">
+                                <source src="static/videos/v2h_6.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1280" height="370">
+                                <source src="static/videos/v2h_7.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation arrow -->
+                <button class="nav-arrow next-arrow" id="gallery-carousel-v2h-next">&#10095;</button>
+            </div>
+            <div class="gallery-dots" id="gallery-carousel-v2h-dots">
+                <!-- Dots will be added dynamically via JavaScript -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="hero is-small" id="comparisons" aria-labelledby="comparisons-title">
+    <div class="hero-body">
+        <div class="container">
+            <p class="section-eyebrow">Experimental results</p>
+            <h2 id="comparisons-title" class="title is-2" style="margin-bottom: 0.5rem;">Qualitative Comparisons</h2>
+            <div class="video-caption" style="margin-bottom: 1rem">
+                <b>Comparisons with Baselines</b> 
+            </div>
+            <div class="video-gallery-carousel-container">
+                <!-- Navigation arrows -->
+                <button class="nav-arrow prev-arrow" id="gallery-carousel-baseline-prev">&#10094;</button>
+                <div class="video-gallery-carousel" id="gallery-carousel-baseline">
+                    <div class="video-single active">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1144" height="800">
+                                <source src="static/videos/baseline_0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1144" height="800">
+                                <source src="static/videos/baseline_1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1144" height="800">
+                                <source src="static/videos/baseline_2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1144" height="800">
+                                <source src="static/videos/baseline_3.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1144" height="800">
+                                <source src="static/videos/baseline_4.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1144" height="800">
+                                <source src="static/videos/baseline_5.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1144" height="800">
+                                <source src="static/videos/baseline_6.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="1144" height="800">
+                                <source src="static/videos/baseline_7.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation arrow -->
+                <button class="nav-arrow next-arrow" id="gallery-carousel-baseline-next">&#10095;</button>
+            </div>
+            <div class="gallery-dots" id="gallery-carousel-baseline-dots" style="margin-bottom: 2rem">
+                <!-- Dots will be added dynamically via JavaScript -->
+            </div>
+
+            <div class="video-caption" style="margin-bottom: 1rem">
+                <b>Offline: Comparison with Pre-Training-Only Variants</b> 
+            </div>
+            <div class="video-gallery-carousel-container">
+                <!-- Navigation arrows -->
+                <button class="nav-arrow prev-arrow" id="gallery-carousel-offline-prev">&#10094;</button>
+                <div class="video-gallery-carousel" id="gallery-carousel-offline">
+                    <div class="video-single active">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/offline_0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/offline_1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/offline_2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/offline_3.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/offline_4.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation arrow -->
+                <button class="nav-arrow next-arrow" id="gallery-carousel-offline-next">&#10095;</button>
+            </div>
+            <div class="gallery-dots" id="gallery-carousel-offline-dots"  style="margin-bottom: 2rem">
+                <!-- Dots will be added dynamically via JavaScript -->
+            </div>
+
+            <div class="video-caption" style="margin-bottom: 1rem">
+                <b>Online: Comparison with Pre-Training-Only Variants</b> 
+            </div>
+            <div class="video-gallery-carousel-container">
+                <!-- Navigation arrows -->
+                <button class="nav-arrow prev-arrow" id="gallery-carousel-online-prev">&#10094;</button>
+                <div class="video-gallery-carousel" id="gallery-carousel-online">
+                    <div class="video-single active">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/online_0.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/online_1.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/online_2.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                    
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/online_3.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+
+                    <div class="video-single">
+                        <div class="video-container">
+                            <video preload="none" controls muted loop playsinline width="960" height="516">
+                                <source src="static/videos/online_4.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation arrow -->
+                <button class="nav-arrow next-arrow" id="gallery-carousel-online-next">&#10095;</button>
+            </div>
+            <div class="gallery-dots" id="gallery-carousel-online-dots">
+                <!-- Dots will be added dynamically via JavaScript -->
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Quantitative results from paper Figures 4 and 5. -->
+<section class="hero is-small results-section" id="scaling" data-nav-section="comparisons" aria-labelledby="scaling-title">
+    <div class="hero-body"><div class="container">
+        <h2 class="title is-2" id="scaling-title">Scaling Behavior</h2>
+        <div class="results-explorer" data-results="scaling">
+            <div class="results-board"><article class="result-card" data-result-card="model" aria-labelledby="result-model-title">
+    <header class="result-card-heading video-caption"><h3 id="result-model-title">Model Capacity</h3></header>
+    <div class="result-generator-grid"><div class="result-generator-group"><p class="result-generator-label">Offline generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="offline"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="Model Capacity: offline Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="offline"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="Model Capacity: offline Tracking MPJPE"></svg></div></div></div><div class="result-generator-group"><p class="result-generator-label">Online generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="online"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="Model Capacity: online Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="online"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="Model Capacity: online Tracking MPJPE"></svg></div></div></div></div>
+</article><article class="result-card" data-result-card="pretrain" aria-labelledby="result-pretrain-title">
+    <header class="result-card-heading video-caption"><h3 id="result-pretrain-title">Pre-Training Data</h3></header>
+    <div class="result-generator-grid"><div class="result-generator-group"><p class="result-generator-label">Offline generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="offline"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="Pre-Training Data: offline Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="offline"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="Pre-Training Data: offline Tracking MPJPE"></svg></div></div></div><div class="result-generator-group"><p class="result-generator-label">Online generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="online"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="Pre-Training Data: online Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="online"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="Pre-Training Data: online Tracking MPJPE"></svg></div></div></div></div>
+</article><article class="result-card" data-result-card="posttrain" aria-labelledby="result-posttrain-title">
+    <header class="result-card-heading video-caption"><h3 id="result-posttrain-title">Post-Training Data</h3></header>
+    <div class="result-generator-grid"><div class="result-generator-group"><p class="result-generator-label">Offline generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="offline"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="Post-Training Data: offline Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="offline"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="Post-Training Data: offline Tracking MPJPE"></svg></div></div></div><div class="result-generator-group"><p class="result-generator-label">Online generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="online"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="Post-Training Data: online Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="online"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="Post-Training Data: online Tracking MPJPE"></svg></div></div></div></div>
+</article></div>
+            <p class="results-note">Shaded bands show 95% confidence intervals. Model-capacity and pre-training-data sweeps are evaluated without post-training. Base denotes the pre-trained model before post-training. Bubble radius is proportional to parameter count.</p>
+        </div>
+    </div></div>
+</section>
+<section class="hero is-small results-section" id="cross-tracker" data-nav-section="comparisons" aria-labelledby="cross-tracker-title">
+    <div class="hero-body"><div class="container">
+        <h2 class="title is-2" id="cross-tracker-title">Cross-Tracker Generalization</h2>
+        <div class="results-explorer" data-results="cross-tracker">
+            <div class="results-board"><article class="result-card" data-result-card="tracker-0" aria-labelledby="result-tracker-0-title">
+    <header class="result-card-heading video-caption"><h3 id="result-tracker-0-title">Humanoid-GPT</h3></header>
+    <div class="result-generator-grid"><div class="result-generator-group"><p class="result-generator-label">Offline generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="offline"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="Humanoid-GPT: offline Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="offline"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="Humanoid-GPT: offline Tracking MPJPE"></svg></div></div></div><div class="result-generator-group"><p class="result-generator-label">Online generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="online"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="Humanoid-GPT: online Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="online"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="Humanoid-GPT: online Tracking MPJPE"></svg></div></div></div></div>
+</article><article class="result-card" data-result-card="tracker-1" aria-labelledby="result-tracker-1-title">
+    <header class="result-card-heading video-caption"><h3 id="result-tracker-1-title">ScaleBFM</h3></header>
+    <div class="result-generator-grid"><div class="result-generator-group"><p class="result-generator-label">Offline generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="offline"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="ScaleBFM: offline Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="offline"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="ScaleBFM: offline Tracking MPJPE"></svg></div></div></div><div class="result-generator-group"><p class="result-generator-label">Online generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="online"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="ScaleBFM: online Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="online"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="ScaleBFM: online Tracking MPJPE"></svg></div></div></div></div>
+</article><article class="result-card" data-result-card="tracker-2" aria-labelledby="result-tracker-2-title">
+    <header class="result-card-heading video-caption"><h3 id="result-tracker-2-title">HoloMotion</h3></header>
+    <div class="result-generator-grid"><div class="result-generator-group"><p class="result-generator-label">Offline generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="offline"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="HoloMotion: offline Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="offline"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="HoloMotion: offline Tracking MPJPE"></svg></div></div></div><div class="result-generator-group"><p class="result-generator-label">Online generator</p><div class="result-metric-pair"><div class="result-chart" data-metric="0" data-generator="online"><h4>Success rate <span>↑</span></h4><svg role="img" aria-label="HoloMotion: online Success rate"></svg></div><div class="result-chart" data-metric="3" data-generator="online"><h4>Tracking MPJPE <span>↓</span></h4><svg role="img" aria-label="HoloMotion: online Tracking MPJPE"></svg></div></div></div></div>
+</article></div>
+            <p class="results-note">Shaded bands show 95% confidence intervals. All results are evaluated on the video-only test set.</p>
+        </div>
+    </div></div>
+</section>
+<script type="application/json" id="results-data">[{"id":"model","title":"Model Capacity","subtitle":"49.9M → 224.7M parameters","x":[49.86,114.62,224.69],"labels":["49.9M","114.6M","224.7M"],"series":{"offline":[[51.42,null,null,72.644,null,null],[59.22,null,null,64.76,null,null],[74.8,null,null,59.0,null,null]],"online":[[39.01,null,null,78.651,null,null],[42.2,null,null,75.78,null,null],[49.6,null,null,71.7,null,null]]},"bubbles":true},{"id":"pretrain","title":"Pre-Training Data","subtitle":"25% → 100% of the training data","x":[25,50,100],"labels":["25%","50%","100%"],"series":{"offline":[[53.9,48.07,59.63,76.13,67.88,84.38],[55.67,49.84,61.36,70.06,62.69,77.43],[74.822695035461,73.2204467072609,76.4249433636611,59.0028979203519,57.2456937240259,60.7601021166779]],"online":[[35.14,30.08,40.74,85.5,75.68,95.32],[40.11,34.77,45.84,76.5,68.83,84.16],[49.645390070922,47.0346739162807,52.2561062255633,71.7261671914417,68.1418469205583,75.3104874623251]]},"bubbles":false},{"id":"posttrain","title":"Post-Training Data","subtitle":"Base model → full post-training data","x":[0,25,50,100],"labels":["Base","25%","50%","100%"],"series":{"offline":[[74.822695035461,73.2204467072609,76.4249433636611,59.0028979203519,57.2456937240259,60.7601021166779],[76.5248226950355,74.9601837354628,78.0894616546081,57.4932402157553,55.7629653394049,59.2235150921057],[78.581560283688,77.0670829689756,80.0960375984003,55.6360994071321,54.1302479135208,57.1419509007434],[80.0354609929078,78.5598244485137,81.5110975373019,54.1596935219026,52.7852403577388,55.5341466860664]],"online":[[49.645390070922,47.0346739162807,52.2561062255633,71.7261671914417,68.1418469205583,75.3104874623251],[58.0851063829787,55.5086834661906,60.6615292997669,67.5942175809348,64.1289334806864,71.0595016811833],[63.3333333333333,60.8170910088162,65.8495756578504,65.5653442296694,62.355303688819,68.7753847705199],[63.8297872340426,61.3208615067547,66.3387129613304,65.2203283675057,62.1074777909712,68.33317894404]]},"bubbles":false},{"id":"tracker-0","title":"Humanoid-GPT","subtitle":"Evaluated without tracker-specific post-training","x":[0,1],"labels":["Without Post-Training","With Post-Training"],"bubbles":false,"series":{"offline":[[46.36,40.81,51.99,109.0,97.3,121.9],[52.98,47.35,58.54,102.1,90.9,114.5]],"online":[[41.06,35.66,46.69,131.5,118.2,145.6],[46.03,40.49,51.66,125.1,111.8,139.6]]}},{"id":"tracker-1","title":"ScaleBFM","subtitle":"Evaluated without tracker-specific post-training","x":[0,1],"labels":["Without Post-Training","With Post-Training"],"bubbles":false,"series":{"offline":[[59.93,54.32,65.3,54.6,52.2,57.1],[67.88,62.42,72.89,52.4,50.2,54.7]],"online":[[46.03,40.49,51.66,62.2,58.1,68.0],[52.32,46.69,57.89,56.4,53.7,59.9]]}},{"id":"tracker-2","title":"HoloMotion","subtitle":"Evaluated without tracker-specific post-training","x":[0,1],"labels":["Without Post-Training","With Post-Training"],"bubbles":false,"series":{"offline":[[65.89,60.38,71.01,76.6,71.5,82.9],[71.19,65.84,76.01,73.8,69.3,79.8]],"online":[[49.67,44.07,55.28,88.3,81.5,96.8],[59.27,53.65,64.66,81.1,75.4,88.4]]}}]</script>
+
+<footer class="project-footer">
+    <div class="container">
+        <a class="nav-brand" href="#top">ViT-H</a>
+        <a href="#top">Back to top ↑</a>
+    </div>
+</footer>
+
+</body>
+</html>
