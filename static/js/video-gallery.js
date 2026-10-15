@@ -1,6 +1,7 @@
 const VideoGallery = (function() {
     const galleries = new Map();
     const pendingLoads = new WeakMap();
+    const playbackControls = new WeakMap();
     let initialized = false;
 
     function loadVideos(videos) {
@@ -83,42 +84,63 @@ const VideoGallery = (function() {
         gallery.container.classList.add('is-loading');
         const selectedSet = gallery.sets[index];
         const videos = [...selectedSet.querySelectorAll('video')];
+        const previousIndex = gallery.activeIndex;
+
+        // iOS may defer loading or playback of display:none media. Select it first.
+        gallery.sets.forEach((set, setIndex) => {
+            set.classList.toggle('active', setIndex === index);
+            if (setIndex !== index) set.querySelectorAll('video').forEach(video => video.pause());
+        });
+        gallery.activeIndex = index;
+        updateDots(gallery);
 
         try {
-            if (restart || index !== gallery.activeIndex) {
+            if (restart || index !== previousIndex) {
                 videos.forEach(video => {
                     video.pause();
                     if (video.currentTime !== 0) video.currentTime = 0;
                 });
             }
-            await loadVideos(videos);
-            if (version !== gallery.version) return;
-
-            // Reveal the incoming video only once playback has started.
-            await Promise.all(videos.map(video => video.play()));
+            // Call play within the tap handler, before any await or readiness event.
+            // play() starts loading even when iOS ignores the preload hint.
+            const playback = videos.map(video => {
+                const controls = playbackControls.get(video);
+                controls.button.hidden = true;
+                controls.cover.hidden = false;
+                video.preload = 'auto';
+                if (video.error || video.networkState === HTMLMediaElement.NETWORK_EMPTY) video.load();
+                return video.play();
+            });
+            await Promise.all(playback);
             if (version !== gallery.version) {
                 if (index !== gallery.activeIndex && index !== gallery.requestedIndex) {
                     videos.forEach(video => video.pause());
                 }
                 return;
             }
-            gallery.sets.forEach((set, setIndex) => {
-                set.classList.toggle('active', setIndex === index);
-                if (setIndex !== index) set.querySelectorAll('video').forEach(video => video.pause());
-            });
-            gallery.activeIndex = index;
             gallery.pending = false;
             gallery.container.classList.remove('is-loading');
-            updateDots(gallery);
+            videos.forEach(video => {
+                // An already-playing element does not emit another playing event.
+                if (video.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) return;
+                const controls = playbackControls.get(video);
+                controls.cover.hidden = true;
+                controls.button.hidden = true;
+            });
             syncVideos(gallery, videos);
             preloadNext(gallery);
         } catch (error) {
             if (version !== gallery.version) return;
             gallery.pending = false;
             gallery.container.classList.remove('is-loading');
-            gallery.requestedIndex = gallery.activeIndex;
-            if (index !== gallery.activeIndex) videos.forEach(video => video.pause());
-            // Autoplay denial or an interrupted play should not trigger an endless retry loop.
+            videos.forEach(video => {
+                if (!video.paused && !video.error) return;
+                const controls = playbackControls.get(video);
+                controls.button.textContent = video.error ? 'Retry video' : '▶ Play video';
+                controls.button.hidden = false;
+                controls.cover.hidden = false;
+            });
+            // Keep the selected slide and provide a direct user gesture to retry playback.
             if (error.name !== 'AbortError' && error.name !== 'NotAllowedError') {
                 console.error('Video playback failed:', error);
             }
@@ -174,13 +196,34 @@ const VideoGallery = (function() {
                 video.playsInline = true;
                 video.loop = false;
                 video.autoplay = false;
-                const showVideo = () => video.classList.add('is-ready');
-                const hideVideo = () => video.classList.remove('is-ready');
-                video.addEventListener('canplay', showVideo);
+                const cover = document.createElement('div');
+                cover.className = 'video-loading-cover';
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'video-play-fallback';
+                button.textContent = '▶ Play video';
+                button.hidden = true;
+                cover.appendChild(button);
+                video.parentElement.appendChild(cover);
+                playbackControls.set(video, { cover, button });
+                cover.addEventListener('click', () => handleVideoSwitch(gallery, index, false));
+                const showVideo = () => {
+                    video.classList.add('is-ready');
+                    cover.hidden = true;
+                    button.hidden = true;
+                };
+                const hideVideo = () => {
+                    video.classList.remove('is-ready');
+                    cover.hidden = false;
+                };
+                video.addEventListener('canplay', () => { if (!video.paused) showVideo(); });
                 video.addEventListener('playing', showVideo);
+                video.addEventListener('seeked', () => {
+                    if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && button.hidden) showVideo();
+                });
                 video.addEventListener('waiting', hideVideo);
                 video.addEventListener('emptied', hideVideo);
-                if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) showVideo();
+                if (!video.paused && video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) showVideo();
             });
             videos[0].addEventListener('ended', () => {
                 if (gallery.visible && !document.hidden && !gallery.pending && gallery.activeIndex === index) {
