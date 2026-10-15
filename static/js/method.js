@@ -7,6 +7,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const parts = [...explorer.querySelectorAll('[data-stage]')];
     const allSteps = [...explorer.querySelectorAll('[data-step]')];
     const controllers = [];
+    const deploymentStage = explorer.querySelector('.method-stage-deploy');
+    const deploymentPaths = [...deploymentStage.querySelectorAll('.method-connector > path')];
+    const desktopDeploymentPaths = deploymentPaths.map(path => path.getAttribute('d'));
+
+    function alignDeploymentArrows() {
+        if (!portrait.matches) {
+            deploymentPaths.forEach((path, index) => path.setAttribute('d', desktopDeploymentPaths[index]));
+            return;
+        }
+        const gap = deploymentStage.getBoundingClientRect().width * 0.0045;
+        const bounds = name => deploymentStage.querySelector(`[data-shape="${name}"]`).getBoundingClientRect();
+        function connect(name, points, direction) {
+            const svg = deploymentStage.querySelector(`svg[data-shape="${name}"]`);
+            const path = svg.querySelector(':scope > path');
+            const inverse = svg.getScreenCTM().inverse();
+            const coordinates = points.map(([x, y]) => new DOMPoint(x, y).matrixTransform(inverse));
+            const marker = svg.querySelector('marker');
+            // The visible arrow tip extends past the path endpoint; leave the gap at the tip.
+            const overhang = (marker.viewBox.baseVal.width - marker.refX.baseVal.value)
+                * marker.markerWidth.baseVal.value / marker.viewBox.baseVal.width
+                * parseFloat(getComputedStyle(path).strokeWidth);
+            const last = coordinates[coordinates.length - 1];
+            if (direction === 'right') last.x -= overhang;
+            else if (direction === 'left') last.x += overhang;
+            else last.y += overhang;
+            path.setAttribute('d', coordinates.map((point, index) => `${index ? 'L' : 'M'} ${point.x.toFixed(3)} ${point.y.toFixed(3)}`).join(' '));
+        }
+        ['OFFLINE', 'ONLINE MOTION', 'ONLINE OBJECT'].forEach((row, index) => {
+            const input = bounds(`${row} / input / REAL SOURCE / ${row === 'ONLINE OBJECT' ? 'v15' : 'v16'}`);
+            const generator = bounds(`${row} / generator`);
+            const tracker = bounds(`${row} / motion tracker`);
+            const robot = bounds(`${row} / robot / REAL SOURCE / ${row === 'ONLINE OBJECT' ? 'v15' : 'v16'}`);
+            const y = (generator.top + generator.bottom) / 2;
+            connect(`${row} / input flow / 1`, [[input.right + gap, y], [generator.left - gap, y]], 'right');
+            connect(`${row} / reference flow / 1`, [[generator.right + gap, y], [tracker.left - gap, y]], 'right');
+            connect(`${row} / action flow / 1`, [[tracker.right + gap, y], [robot.left - gap, y]], 'right');
+            if (index === 0) return;
+            const prefix = deploymentStage.querySelectorAll('.method-shape[data-shape="ONLINE MOTION / prefix box"]')[index - 1].getBoundingClientRect();
+            const robotX = (robot.left + robot.right) / 2;
+            const prefixY = (prefix.top + prefix.bottom) / 2;
+            connect(`Elbow Connector ${index === 1 ? 272 : 277}`, [[robotX, robot.bottom + gap], [robotX, prefixY], [prefix.right + gap, prefixY]], 'left');
+            const generatorX = (generator.left + generator.right) / 2;
+            connect(`${row} / prefix conditioning / 1`, [[generatorX, prefix.top - gap], [generatorX, generator.bottom + gap]], 'up');
+        });
+    }
+    new ResizeObserver(alignDeploymentArrows).observe(deploymentStage);
 
     function createController(scope, steps, controls, mobile) {
         const controller = {
@@ -253,6 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { rootMargin: '-100px 0px -40px 0px', threshold: 0 });
 
     function changeLayout() {
+        alignDeploymentArrows();
         controllers.forEach(controller => {
             stop(controller);
             controller.controls.hidden = !isActive(controller);

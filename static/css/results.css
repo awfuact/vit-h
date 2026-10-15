@@ -1,4 +1,9 @@
 .results-section .title.is-2 { margin-bottom: 0; padding-bottom: 18px; }
+#scaling, #cross-tracker { border-top: 0; }
+#comparisons .hero-body { padding-bottom: 40px; }
+#comparisons .gallery-dots:last-child { margin-bottom: 0; }
+#scaling .hero-body { padding-block: 40px; }
+#cross-tracker .hero-body { padding-top: 40px; }
 .results-intro { width: 100%; max-width: 1200px; margin: 0 0 30px; font-size: 22px !important; line-height: 1.55; }
 .results-explorer { width: 100%; max-width: 1200px; --result-offline: #8dbbd5; --result-online: #cf9fba; }
 .results-legend { display: flex; flex-wrap: wrap; gap: 12px 30px; margin-bottom: 24px; font-size: 18px; color: #e4dfdc; }
@@ -31,7 +36,6 @@
 .result-chart .chart-band { opacity: .13; }
 .result-chart .chart-line { fill: none; stroke-width: 2.2; stroke-linejoin: round; stroke-linecap: round; }
 .result-chart .chart-marker { stroke-width: 2; }
-.results-note { border-top: 1px solid var(--theme-border); margin-top: 32px; padding-top: 20px; color: #9f9691; font-size: 16px !important; line-height: 1.55; }
 .result-controls { margin-bottom: 20px; }
 .result-controls-line { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 36px; }
 .result-controls-caption { font-size: 16px; line-height: 1.35; color: #b8b5b2; }
@@ -57,4 +61,9 @@
 
 @media (max-width: 600px) {
     .result-metric-pair { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+}
+@media (max-width: 768px) {
+    #comparisons .hero-body { padding-bottom: 24px; }
+    #scaling .hero-body { padding-block: 24px; }
+    #cross-tracker .hero-body { padding-top: 24px; }
 }

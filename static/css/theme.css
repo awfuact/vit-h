@@ -53,7 +53,7 @@ button { font: inherit; }
 .publication-authors { margin-top: 34px; font-family: inherit; color: #faf7f7; font-size: 22px !important; text-shadow: 0 2px 12px #0b0909; }
 .author-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 24px; margin-bottom: 8px; }
 .author-block { white-space: nowrap; }
-.author-block sup { color: var(--theme-accent-text); font-size: .65em; margin-left: 4px; margin-right: 3px; }
+.author-block sup { color: var(--theme-accent-text); font-size: .75em; margin-left: 4px; margin-right: 3px; }
 .publication-authors a.author {
     color: inherit !important;
     text-decoration: none;
@@ -66,8 +66,8 @@ button { font: inherit; }
     text-decoration: none;
     border-bottom-color: var(--theme-accent-text);
 }
-.affiliations { margin-top: 18px; font-size: 20px; color: #faf7f7; }
-.contribution-notes { font-size: 20px; color: #faf7f7; }
+.affiliations { margin-top: 18px; font-size: inherit; color: #faf7f7; }
+.contribution-notes { font-size: inherit; color: #faf7f7; }
 .affiliations .author-block, .contribution-notes .author-block { white-space: normal; }
 .publication-links .button { font-family: var(--theme-font); font-size: 20px; padding-inline: 22px; background-color: #484646; border-color: #625e5e; color: #faf7f7; }
 .publication-links .button:hover, .publication-links .button:focus-visible { background-color: #585454; border-color: #807878; color: #fff; }
@@ -111,11 +111,11 @@ figure.image { overflow: hidden; border: 1px solid var(--theme-border); border-r
 figure figcaption.mt-3 { margin-top: 0 !important; padding: 24px 28px; color: var(--text-color); font-size: 20px !important; line-height: 1.65; }
 .video-caption { width: 100%; max-width: var(--content-width-md); padding: 20px 0 12px; text-align: left; font-size: 26px; letter-spacing: -.02em; }
 .video-gallery-carousel-container { padding: 0; border: none; border-radius: 0; background: transparent; box-shadow: none; }
-/* Match the baseline frame to its 1144:800 video at the 75vh height limit. */
-.video-gallery-carousel-container:has(#gallery-carousel-baseline) { max-width: min(100%, calc(75vh * 1144 / 800)); }
 .video-gallery-carousel, .video-single, .video-single .video-container { max-width: 100%; }
 .video-container, .video-gallery-carousel video { background: transparent; border: none; border-radius: 18px; box-shadow: none; }
 .video-single .video-container video { display: block; width: 100%; max-height: 75vh; }
+/* Keep baseline width consistent with other galleries, regardless of viewport height. */
+#gallery-carousel-baseline video { max-height: none; }
 .video-gallery-carousel .video-container { background: #000; }
 .video-gallery-carousel video { opacity: 0; }
 .video-gallery-carousel video.is-ready { opacity: 1; }
@@ -127,8 +127,19 @@ figure figcaption.mt-3 { margin-top: 0 !important; padding: 24px 28px; color: va
 .gallery-dots { align-items: center; min-height: 32px; margin-top: 16px; margin-bottom: 44px; }
 .gallery-dot.active { transform: none; box-shadow: 0 0 15px rgba(140,21,21,.5); }
 .gallery-dot:hover { background: #efb2b2; }
-.project-footer { padding: 38px 32px; border-top: 1px solid var(--theme-border); }
-.project-footer .container { max-width: 1280px; display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: 17px; }
+.citation-box { width: 100%; max-width: var(--content-width-lg); min-width: 0; overflow: hidden; border: 1px solid var(--theme-border); border-radius: 18px; background: var(--theme-surface); }
+.citation-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 26px; border-bottom: 1px solid var(--theme-border); }
+.citation-heading h3 { color: #faf7f7; font-size: 26px; font-weight: 600; }
+.citation-copy { border: 1px solid rgba(235,211,211,.25); border-radius: 8px; padding: 5px 16px; background: #343030; color: #faf7f7; font: inherit; font-size: 17px; cursor: pointer; }
+.citation-copy:hover { background: #484646; }
+.citation-box pre { margin: 0; padding: 26px; background: transparent; color: #cfc6c6; font-size: 14px; line-height: 1.8; white-space: pre-wrap; overflow-wrap: anywhere; }
+.citation-box code { padding: 0; background: transparent; color: inherit; font: inherit; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.project-footer { padding: 38px max(32px, calc((100vw - 1280px) / 2)); border-top: 1px solid var(--theme-border); }
+.project-footer .container { width: 100%; max-width: 1280px; padding-inline: 0; display: flex; justify-content: space-between; align-items: center; gap: 24px; font-size: 17px; }
+.footer-credits { max-width: 1200px; margin: 24px auto 0; color: #ab9999; font-size: 16px; line-height: 1.7; text-align: center; }
+.footer-credits p + p { margin-top: 6px; }
+.footer-credits a { color: var(--theme-accent-text); text-decoration: underline; text-decoration-color: rgba(226,160,160,.4); text-underline-offset: 3px; }
+.footer-credits a:hover { color: #faf7f7; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--theme-accent-text); outline-offset: 5px; }
 
 @media (max-width: 1050px) {
@@ -145,8 +156,6 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--theme-accent-te
     .publication-title { font-size: clamp(32px, 5.5vw, 44px) !important; }
     .publication-subtitle br { display: none; }
     .publication-authors { font-size: 20px !important; margin-top: 28px; }
-    .affiliations { font-size: 18px; }
-    .contribution-notes { font-size: 18px; }
     .publication-links .button { font-size: 18px; padding-inline: 18px; }
     .abstract-body p { font-size: 18px !important; }
     .research-facts { gap: 10px; }
@@ -166,11 +175,18 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--theme-accent-te
     .prev-arrow { left: -18px; }
     .next-arrow { right: -18px; }
     .project-footer { padding-inline: 24px; }
+    .citation-box { border-radius: 12px; }
+    .citation-heading { padding: 14px 18px; }
+    .citation-box pre { padding: 18px; font-size: 13px; }
+}
+@media (max-width: 600px) {
+    .project-nav { flex-wrap: wrap; gap: 3px; padding-block: 10px; }
+    .nav-links { width: 100%; justify-content: space-between; gap: 8px; }
 }
 @media (max-width: 480px) {
     :root { --nav-height: 110px; }
     .project-nav { flex-wrap: wrap; gap: 3px; padding-block: 10px; }
-    .nav-links { width: 100%; justify-content: space-between; gap: 10px; }
+    .nav-links { width: 100%; justify-content: space-between; gap: 6px; font-size: clamp(12px, 3.6vw, 16px); }
     .publication-links { max-width: 340px; }
     .research-facts { gap: 10px; }
     .research-facts > div + div { padding-left: 10px; }

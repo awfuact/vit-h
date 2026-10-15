@@ -1,6 +1,29 @@
 window.HELP_IMPROVE_VIDEOJS = false;
 
 document.addEventListener('DOMContentLoaded', function() {
+    const copyButton = document.querySelector('.citation-copy');
+    const citation = document.querySelector('#citation-bibtex');
+    let resetLabel;
+
+    copyButton.addEventListener('click', async function() {
+        clearTimeout(resetLabel);
+        try {
+            await navigator.clipboard.writeText(citation.textContent);
+            copyButton.textContent = 'Copied!';
+        } catch {
+            // Keep the citation easy to copy when clipboard access is unavailable.
+            const range = document.createRange();
+            range.selectNodeContents(citation);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            copyButton.textContent = 'Select & copy';
+        }
+        resetLabel = setTimeout(() => { copyButton.textContent = 'Copy'; }, 2500);
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
     const navigation = document.querySelector('.project-nav');
     const abstract = document.querySelector('#abstract');
     function updateNavigationVisibility() {
@@ -83,19 +106,32 @@ document.addEventListener('DOMContentLoaded', function() {
     reducedMotion.addEventListener('change', updateHighlightPlayback);
 
     const navigationLinks = document.querySelectorAll('.nav-links a');
-    const sectionObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-            if (!entry.isIntersecting) return;
-            navigationLinks.forEach(function(link) {
-                if (link.hash === '#' + (entry.target.dataset.navSection || entry.target.id)) {
-                    link.setAttribute('aria-current', 'location');
-                } else {
-                    link.removeAttribute('aria-current');
-                }
-            });
+    const sections = [...document.querySelectorAll('section[id]')];
+    const navigation = document.querySelector('.project-nav');
+
+    function updateCurrentSection() {
+        const readingPosition = Math.max(navigation.getBoundingClientRect().height + 1, window.innerHeight * 0.25);
+        let currentSection = sections[0];
+        sections.forEach(function(section) {
+            if (section.getBoundingClientRect().top <= readingPosition) currentSection = section;
         });
-    }, { rootMargin: '-15% 0px -65% 0px' });
-    document.querySelectorAll('section[id]').forEach(function(section) {
-        sectionObserver.observe(section);
-    });
+
+        // A short final section may never reach the reading position before scrolling ends.
+        if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2) {
+            currentSection = sections[sections.length - 1];
+        }
+        const currentHash = '#' + (currentSection.dataset.navSection || currentSection.id);
+        navigationLinks.forEach(function(link) {
+            if (link.hash === currentHash) {
+                link.setAttribute('aria-current', 'location');
+            } else {
+                link.removeAttribute('aria-current');
+            }
+        });
+    }
+
+    window.addEventListener('scroll', updateCurrentSection, { passive: true });
+    window.addEventListener('resize', updateCurrentSection);
+    new ResizeObserver(updateCurrentSection).observe(document.body);
+    updateCurrentSection();
 });
